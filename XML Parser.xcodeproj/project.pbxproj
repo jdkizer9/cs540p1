@@ -7,8 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4893208316D2A8FD00E44DCF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893208216D2A8FD00E44DCF /* main.cpp */; };
 		4893208516D2A8FD00E44DCF /* XML_Parser.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4893208416D2A8FD00E44DCF /* XML_Parser.1 */; };
+		4893208D16D2A91100E44DCF /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893208B16D2A91100E44DCF /* Node.cpp */; };
+		4893209316D2AA7C00E44DCF /* Element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209116D2AA7C00E44DCF /* Element.cpp */; };
+		4893209616D2AB6300E44DCF /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209416D2AB6300E44DCF /* Text.cpp */; };
+		4893209916D2ABD000E44DCF /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209716D2ABD000E44DCF /* Parser.cpp */; };
+		4893209C16D2ACED00E44DCF /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209A16D2ACED00E44DCF /* String.cpp */; };
+		4893209F16D2ADD600E44DCF /* Visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209D16D2ADD600E44DCF /* Visitor.cpp */; };
+		489320A516D3188E00E44DCF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 489320A416D3188E00E44DCF /* main.cpp */; };
+		489320AA16D4726200E44DCF /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 489320A816D4726200E44DCF /* Input.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,8 +33,23 @@
 
 /* Begin PBXFileReference section */
 		4893207F16D2A8FC00E44DCF /* XML Parser */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "XML Parser"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4893208216D2A8FD00E44DCF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4893208416D2A8FD00E44DCF /* XML_Parser.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = XML_Parser.1; sourceTree = "<group>"; };
+		4893208B16D2A91100E44DCF /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
+		4893208C16D2A91100E44DCF /* Node.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Node.hpp; sourceTree = "<group>"; };
+		4893209116D2AA7C00E44DCF /* Element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Element.cpp; sourceTree = "<group>"; };
+		4893209216D2AA7C00E44DCF /* Element.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Element.hpp; sourceTree = "<group>"; };
+		4893209416D2AB6300E44DCF /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
+		4893209516D2AB6300E44DCF /* Text.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Text.hpp; sourceTree = "<group>"; };
+		4893209716D2ABD000E44DCF /* Parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
+		4893209816D2ABD000E44DCF /* Parser.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Parser.hpp; sourceTree = "<group>"; };
+		4893209A16D2ACED00E44DCF /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
+		4893209B16D2ACED00E44DCF /* String.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = String.hpp; sourceTree = "<group>"; };
+		4893209D16D2ADD600E44DCF /* Visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Visitor.cpp; sourceTree = "<group>"; };
+		4893209E16D2ADD600E44DCF /* Visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Visitor.hpp; sourceTree = "<group>"; };
+		489320A416D3188E00E44DCF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		489320A716D31BCC00E44DCF /* test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = test.xml; path = Build/test.xml; sourceTree = SOURCE_ROOT; };
+		489320A816D4726200E44DCF /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
+		489320A916D4726200E44DCF /* Input.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Input.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +82,23 @@
 		4893208116D2A8FC00E44DCF /* XML Parser */ = {
 			isa = PBXGroup;
 			children = (
-				4893208216D2A8FD00E44DCF /* main.cpp */,
+				489320A716D31BCC00E44DCF /* test.xml */,
+				489320A416D3188E00E44DCF /* main.cpp */,
 				4893208416D2A8FD00E44DCF /* XML_Parser.1 */,
+				4893208B16D2A91100E44DCF /* Node.cpp */,
+				4893208C16D2A91100E44DCF /* Node.hpp */,
+				4893209116D2AA7C00E44DCF /* Element.cpp */,
+				4893209216D2AA7C00E44DCF /* Element.hpp */,
+				4893209416D2AB6300E44DCF /* Text.cpp */,
+				4893209516D2AB6300E44DCF /* Text.hpp */,
+				489320A816D4726200E44DCF /* Input.cpp */,
+				489320A916D4726200E44DCF /* Input.hpp */,
+				4893209716D2ABD000E44DCF /* Parser.cpp */,
+				4893209816D2ABD000E44DCF /* Parser.hpp */,
+				4893209A16D2ACED00E44DCF /* String.cpp */,
+				4893209B16D2ACED00E44DCF /* String.hpp */,
+				4893209D16D2ADD600E44DCF /* Visitor.cpp */,
+				4893209E16D2ADD600E44DCF /* Visitor.hpp */,
 			);
 			path = "XML Parser";
 			sourceTree = "<group>";
@@ -117,7 +154,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4893208316D2A8FD00E44DCF /* main.cpp in Sources */,
+				4893208D16D2A91100E44DCF /* Node.cpp in Sources */,
+				4893209316D2AA7C00E44DCF /* Element.cpp in Sources */,
+				4893209616D2AB6300E44DCF /* Text.cpp in Sources */,
+				4893209916D2ABD000E44DCF /* Parser.cpp in Sources */,
+				4893209C16D2ACED00E44DCF /* String.cpp in Sources */,
+				4893209F16D2ADD600E44DCF /* Visitor.cpp in Sources */,
+				489320A516D3188E00E44DCF /* main.cpp in Sources */,
+				489320AA16D4726200E44DCF /* Input.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +260,7 @@
 				4893208A16D2A8FD00E44DCF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
