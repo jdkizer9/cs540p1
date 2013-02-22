@@ -26,6 +26,10 @@ namespace xml {
         //std::cout << "Called the 2 param ctor" << std::endl;
     }
     
+    String::String(const char *p) : ptr(p), len((int)strlen(p)) {
+        //std::cout << "Called the 1 param ctor" << std::endl;
+    }
+    
     
     // Assignment.
     String &String::operator=(const String &s) {
@@ -39,6 +43,13 @@ namespace xml {
         //std::cout << "Called the default ctor" << std::endl;
     }
     
+    void String::Print(std::ostream &out) const {
+        for (int i=0; i<len; i++)
+            out.put(ptr[i]);
+        
+    }
+    
+    
     int String::compare(const char *cStr) const {
         return strncmp(cStr, ptr, len);
     }
@@ -48,6 +59,24 @@ namespace xml {
             return -1;
         return strncmp(s.ptr, ptr, len);
     }
+    
+    char String::operator[](size_t i) {
+        
+        if (i >= len) {
+            return '\0';
+        } else {
+            return ptr[i];
+        }
+    }
+
+
+    String::~String() {
+//        std::cout << "Destructing String: ";
+//        Print(std::cout);
+//        std::cout << std::endl;
+        len = 0;
+    }
+    
     
     //This could probably be more efficient. Uses conversion from String to string.
     bool operator==(const std::string &stdStr, const String &myStr){
@@ -93,8 +122,10 @@ namespace xml {
     
     //This could probably be more efficient. Uses conversion from String to string.
     //However, this gets around forcing this to be a friend function for local access.
+    //Could use a public Print member function that returns an ostream
     std::ostream &operator<<(std::ostream &out, const String &S) {
-        out << std::string(S);
+        //out << std::string(S);
+        S.Print(out);
         return out;
     }
 

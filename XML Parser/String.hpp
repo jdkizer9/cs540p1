@@ -13,6 +13,7 @@
 
 namespace xml{
     class String {
+        //API
     public:
         // Copy constructor.
         String(const String &);
@@ -21,13 +22,21 @@ namespace xml{
         // Assignment.
         String &operator=(const String &);
         
+        //"Internal" Public Interface
     public:
         String();
         String(const char *, int);
+        String(const char *);
+        void Print(std::ostream &) const;
         
         //compares first len bytes
         int compare(const char *) const;
         int compare(const String &) const;
+        
+        //index operator
+        char operator[](size_t);
+        
+        ~String();
         
     private:
         const char *ptr;
@@ -52,6 +61,11 @@ bool operator!=(const String &, const String &);
     
 // Output operator
 std::ostream &operator<<(std::ostream &, const String &);
+    
+
 }
+
+
+
 
 #endif /* defined(__XML_Parser__String__) */
