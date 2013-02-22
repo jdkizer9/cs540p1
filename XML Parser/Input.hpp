@@ -9,6 +9,7 @@
 #ifndef __XML_Parser__Input__
 #define __XML_Parser__Input__
 
+#include "String.hpp"
 #include <cstring>
 
 namespace xml {
@@ -17,9 +18,10 @@ namespace xml {
         Input(const char *, const size_t);
         char get_char();
         size_t get_pos();
+        
+        ~Input();
     private:
-        const char *buf;
-        const size_t size;
+        String s;
         size_t pos;
     };
 }

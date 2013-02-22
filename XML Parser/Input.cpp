@@ -10,10 +10,13 @@
 #ifdef DEBUG
 #include <stdio.h>
 #endif
+#include <iostream>
 
 using namespace xml;
 
-Input::Input(const char *s, const size_t l) : buf(s), size(l), pos(0) {}
+Input::Input(const char *s, const size_t l) : s(s, (int)l), pos(0) {
+    //std::cout << "Constructing Input" <<std::endl;
+}
 
 
 //upgrades:
@@ -22,17 +25,21 @@ Input::Input(const char *s, const size_t l) : buf(s), size(l), pos(0) {}
 //that the input has completed
 char
 Input::get_char() {
-    if (pos == size) {
-        return '\0';
-    } else {
-#ifdef DEBUG
-        printf("%c",buf[pos]);
-#endif
-        return buf[pos++];
-    }
+    
+    char c = s[pos];
+
+    if (c != '\0')
+        pos++;
+    
+    return c;
 }
 
 size_t
 Input::get_pos() {
     return pos;
+}
+
+Input::~Input() {
+    
+    //std::cout << "Destructing Input" <<std::endl;
 }
