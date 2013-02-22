@@ -29,7 +29,25 @@ namespace xml {
         //Used to determine which element is in scope
         //when an element start tag is processed, it is added to the stack
         //when its end tag is processed, it is popped from the stack
+        //The most recently processed end tag should ALWAYS match the top of the stack
         //Elements are created by their parent element, only the pointer lives here
+//        
+//        Example Usage::
+//        stack<const String *> myStack2;
+//        
+//        const String s3("MyString3");
+//        const String s4("MyString4");
+//        
+//        myStack2.push((const String *)(&s3));
+//        myStack2.push((const String *)(&s4));
+//        
+//        cout << "Popping out elements...\n";
+//        while (!myStack2.empty())
+//        {
+//            cout << *(myStack2.top()) << endl;
+//            myStack2.pop();
+//        }
+//        cout << endl;
         std::stack<Element *> elementStack;
         
         
