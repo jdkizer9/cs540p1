@@ -65,6 +65,8 @@ namespace xml{
         const String URI;
         
         //Child Node deque
+        //the Nodes should live here
+        //they willbe destroyed when removed the deque in the dtor
         std::deque<Node> children;
         
         //Defined NSIs deque
