@@ -22,6 +22,10 @@ namespace xml {
         static const Text *to_Text(const Node *);
     public:
         // You could add more to the public interface, if you wanted to.
+        
+        //This must destroy all the child nodes
+        //base destructor is virtual
+        virtual ~Text();
     private:
         // Private things for your implementation.
     };
