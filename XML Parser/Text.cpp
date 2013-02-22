@@ -7,3 +7,11 @@
 //
 
 #include "Text.hpp"
+#include <iostream>
+
+
+namespace xml {
+    Text::~Text() {
+        std::cout << "Destructing Text" <<std::endl;
+    }
+}
