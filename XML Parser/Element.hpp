@@ -12,6 +12,8 @@
 #include "Node.hpp"
 #include "String.hpp"
 #include "Visitor.hpp"
+#include <deque>
+#include <unordered_map>
 
 namespace xml{
     
@@ -39,8 +41,41 @@ namespace xml{
         static const Element *to_Element(const Node *);
     public:
         // You could add more to the public interface, if you wanted to.
+        
+        //This must destroy all the child nodes
+        //base destructor is virtual
+        //popping all elements off element deque
+        virtual ~Element();
+        
+        //Most of the private variables may need to be updated after construction
+        //would be helpful for nsi, eName, URI, definitely children and definedNSIs
+        //should only be updated by Parser, make friend and protect setter functions
     private:
         // Private things for your implementation.
+        
+        //optional nsi known as part of START_TAG processing
+        const String nsi;
+        
+        //element name known as part of START_TAG processing
+        const String eName;
+        
+        //set after NSTable is updated during START_TAG processing
+        //this ensures that the propper scope URI is returned
+        //(i.e., the nsi could be rebound as part of this element)
+        const String URI;
+        
+        //Child Node deque
+        std::deque<Node> children;
+        
+        //Defined NSIs deque
+        //populated by the parser during START_TAG processing, guaranteed to
+        //be unique as uniqueness is checked by parser before populating
+        //necessary so that the parser knows which NSI values to pop off the
+        //parser's NSTable when the element comes off the element stack during
+        //END_TAG processing
+        std::deque<String> definedNSIs;
+        
+        
     };
 }
 
