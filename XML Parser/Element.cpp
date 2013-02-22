@@ -7,3 +7,13 @@
 //
 
 #include "Element.hpp"
+#include <iostream>
+
+namespace xml {
+    
+    Element::~Element() {
+        std::cout << "Destructing Element" <<std::endl;
+        
+    }
+    
+}
