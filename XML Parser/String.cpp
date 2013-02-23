@@ -40,6 +40,13 @@ namespace xml {
         return *this;
     }
     
+    String String::slice(int offset, int length) {
+        assert(offset+length <= len);
+        if (length == -1)
+            length = len - offset;
+        return String(ptr+offset, length);
+    }
+    
     String::String() : ptr(NULL), len(0) {
         //std::cout << "Called the default ctor" << std::endl;
     }
@@ -115,7 +122,7 @@ namespace xml {
         
     }
     
-    char String::operator[](size_t i) {
+    char String::operator[](size_t i) const {
         
         if (i >= len) {
             return '\0';
@@ -124,7 +131,10 @@ namespace xml {
         }
     }
 
-
+    const char *String::get_ptr() const {
+        return ptr;
+    }
+    
     String::~String() {
 //        std::cout << "Destructing String: ";
 //        Print(std::cout);

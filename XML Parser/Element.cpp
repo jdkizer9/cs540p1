@@ -16,4 +16,23 @@ namespace xml {
         
     }
     
+    const String &Element::name() const {
+        return eName;
+    }
+    
+    const String &Element::nmspace() const {
+        return URI;
+    }
+    
+    void Element::set_eName(const String &s) {
+        eName = s;
+    }
+    
+    void Element::set_nsi(const String &s) {
+        nsi = s;
+    }
+    
+    void Element::set_URI(const String &s) {
+        URI = s;
+    }
 }

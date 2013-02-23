@@ -22,6 +22,8 @@ namespace xml{
         // Assignment.
         String &operator=(const String &);
         
+        String slice(int, int);
+        
         //"Internal" Public Interface
     public:
         String();
@@ -43,9 +45,16 @@ namespace xml{
         int find(int, int(*)(int)) const;
         int find(int, const String &) const;
         
+        //returns reference to a string from
+        //offset to first instance of char
+        //String &readUntil(int, char) const;
+        
         
         //index operator
-        char operator[](size_t);
+        char operator[](size_t) const;
+        
+        //accessor
+        const char *get_ptr() const;
         
         ~String();
         

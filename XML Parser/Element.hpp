@@ -50,19 +50,22 @@ namespace xml{
         //Most of the private variables may need to be updated after construction
         //would be helpful for nsi, eName, URI, definitely children and definedNSIs
         //should only be updated by Parser, make friend and protect setter functions
+        void set_eName(const String &);
+        void set_nsi(const String &);
+        void set_URI(const String &);
     private:
         // Private things for your implementation.
         
         //optional nsi known as part of START_TAG processing
-        const String nsi;
+        String nsi;
         
         //element name known as part of START_TAG processing
-        const String eName;
+        String eName;
         
         //set after NSTable is updated during START_TAG processing
         //this ensures that the propper scope URI is returned
         //(i.e., the nsi could be rebound as part of this element)
-        const String URI;
+        String URI;
         
         //Child Node deque
         //the Nodes should live here

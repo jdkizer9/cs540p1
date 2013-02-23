@@ -34,12 +34,33 @@ Input::get_char() {
     return c;
 }
 
+const char Input::peek() const {
+    return s[pos];
+}
+
 size_t
-Input::get_pos() {
+Input::get_pos() const {
     return pos;
 }
+
+const char * Input::get_abs_pos() const {
+    return s.get_ptr()+pos;
+}
+
+char Input::operator[](size_t i) const {
+    return s[i];
+}
+
+String Input::readUnitl(char c) {
+    int offset = s.find((int)pos, c);
+    const char *tmpPos = pos+s.get_ptr();
+    pos += offset;
+    return String(tmpPos, offset);
+}
+
 
 Input::~Input() {
     
     //std::cout << "Destructing Input" <<std::endl;
 }
+

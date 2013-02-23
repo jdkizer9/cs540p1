@@ -7,22 +7,92 @@
 //
 
 #include "Parser.hpp"
-#include "Input.hpp"
 #include <iostream>
 #include <assert.h>
 
 namespace xml {
     
-Parser::Parser(){
+    
+    const String beginCommentTag("<!--");
+    const String endCommentTag("-->");
+    const String beginEndElementTag("<\\");
+    
+    int isAlphaNumOrUS(int c) {
+        if(c == '_')
+            return !0;
+        else
+            return isalnum(c);
+    }
+    
+    
+    Parser::Parser() : foundRoot(false), root(nullptr) {
         
-};
+    };
+    
+    //need to be more robust,
+    //confirm valid input and element and NSIs
+    int Parser::processStartTag(Input &in) {
+        
+        String eNameString;
+        
+        int WSOffset = elemString.find(0, isspace);
+        int ColOffset = elemString.find(0, ':');
+        
+        //<e3>
+        //simple-case, standalone element
+        if ((WSOffset < 0) && (ColOffset < 0)) {
+            //all of elemString is the element's name
+            e->set_eName(elemString);
+            //does not belong to a namespace or bind any new namespaces
+            return 0;
+        }
+        
+        //<e3 >
+        //Just standalone tag, followed by whitespace
+        //all xmlns bindings contain ':'
+        if (ColOffset < 0) {
+            //strip off whitespace
+            e->set_eName(elemString.slice(0, WSOffset));
+            //does not belong to a namespace or bind any new namespaces
+            return 0;
+        }
+        
+        //<ns2:elem3>
+        if (WSOffset < 0) {
+            //does not bind any new namespaces, can set nsi and URI now
+            String eNSI = elemString.slice(0, ColOffset);
+            e->set_nsi(eNSI);
+            
+            //assert here, something is terribly wrong
+            //or could this be invalid input?
+            //need to check table for this entry?
+            assert(!(NSTable[eNSI].empty()));
+            e->set_URI(NSTable[eNSI].top());
+            
+            std::cout<<eNSI<<" is associated with "<<NSTable[eNSI].top()<<std::endl;
+            return 0;
+        }
+    
+        //<ns1:elem2 [...]>
+        //if just followed by whitespace, this could be identical
+        if (ColOffset < WSOffset) {
+            
+        }
+        
+        //<elem2 xmlns:...>
+        
+        return 0;
+    }
     
     
 const Element *Parser::parse(const char *doc, size_t sz)
 {
 
     Input in(doc, sz);
-    Element *e = new Element;
+    root = new Element();
+    char ch;
+    int retVal;
+    bool readChar = true;
     
     enum {
         WHITESPACE = 1,
@@ -35,30 +105,57 @@ const Element *Parser::parse(const char *doc, size_t sz)
     } state = WHITESPACE;
     
     while (state != END)
-    {        
-        char ch = in.get_char();
-        
+    {
+        if (readChar)
+        {
+            readChar = false;
+            ch = in.get_char();
+        }
         if (ch == '\0')
             break;
         
         switch (state)
         {
-            default:
-                //std::cout << ch;
-                break;
-//            case WHITESPACE:
-//            {
-//                if (ch == '<') {
-//                    printf("Found Left Angle\n");
-//                    state = LEFT_ANGLE;
-//                } else if (!isspace(ch)) {
-//                    assert(false);
-//                }
-//            }
+//            default:
+//                std::cout << ch;
 //                break;
-//                
-//            case LEFT_ANGLE:
-//            {
+            case WHITESPACE:
+            {
+                //if more whitespace, get next char
+                if(isspace(ch))
+                {
+                    //read another char on loop
+                    readChar = true;
+                    break;
+                }
+                
+                if ( (ch == '<') && !foundRoot ) {
+                    state = LEFT_ANGLE;
+                }
+                //if found a character other than < before root node start tag
+                //or a character after root node end tag, return error
+                else {
+                    if (!foundRoot)
+                        std::cerr<<"Invalid input while looking for root element\n";
+                    else
+                        std::cerr<<"Invalid input at end of stream\n";
+                    
+                    if (root == nullptr)
+                        root = new Element;
+                    return root;
+                }
+                
+            }
+                break;
+
+            case LEFT_ANGLE:
+            {
+                if (isAlphaNumOrUS(in[in.get_pos()])) {
+                    
+                    retVal = processStartTag(in);
+                    
+                }
+                
 //                if (ch=='!') {
 //                    printf("Found Comment\n");
 //                    state = COMMENT;
@@ -69,9 +166,9 @@ const Element *Parser::parse(const char *doc, size_t sz)
 //                    printf("Found END_TAG\n");
 //                    state = END_TAG;
 //                }
-//            }
-//                break;
-//                
+            }
+                break;
+//
 //            case START_TAG:
 //            {
 //                if (ch=='>') {
@@ -99,15 +196,17 @@ const Element *Parser::parse(const char *doc, size_t sz)
 //            }
 //                break;
 //                
-//            default:
-//                assert(false);
+            default:
+                assert(false);
         }
         
     }
     
     
     std::cout<<"\nReturing root element from parser\n";
-    return e;
+    if (root == nullptr)
+        root = new Element;
+    return root;
 
 }
     

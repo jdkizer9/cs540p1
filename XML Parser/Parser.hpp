@@ -11,6 +11,7 @@
 
 #include "Element.hpp"
 #include "String.hpp"
+#include "Input.hpp"
 #include <stack>
 #include <unordered_map>
 #include <cstring> //Is this needed?
@@ -24,6 +25,9 @@ namespace xml {
     public:
         
     private:
+        
+        int processStartTag(Input &);
+        
         
         //Stack of elements
         //Used to determine which element is in scope
@@ -49,12 +53,14 @@ namespace xml {
 //        }
 //        cout << endl;
         std::stack<Element *> elementStack;
+        bool foundRoot;
+        Element *root;
         
         
         //Associative array of String stacks
         //keys=nmspace prefix, values=stack of URIs associated with each nmspace
         //stacks needed to ensure that the correct URI is in scope
-        std::unordered_map<std::string, std::stack<String>> NSTable;
+        std::unordered_map<std::string, std::stack<const String>> NSTable;
         
         //associative array of xmlns pairs
         //technically, only a list of NSIs is necessary to live in the element
@@ -67,8 +73,13 @@ namespace xml {
         //See sample usage of iteration at:
         //http://www.cplusplus.com/reference/unordered_map/unordered_map/begin/
         
+        static const String beginCommentTag;
+        static const String endCommentTag;
+        static const String beginEndElementTag;
+        
         
     };
+    int isAlphaNumOrUS(int);
 }
 
 #endif /* defined(__XML_Parser__Parser__) */

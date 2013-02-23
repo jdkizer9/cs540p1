@@ -17,13 +17,22 @@ namespace xml {
     public:
         Input(const char *, const size_t);
         char get_char();
-        size_t get_pos();
+        const char peek() const;
+        size_t get_pos() const;
+        const char * get_abs_pos() const;
+        //index operator
+        char operator[](size_t) const;
+        
+        //simulates reading input until char found
+        //returns characters in string
+        String readUnitl(char);
         
         ~Input();
     private:
         String s;
         size_t pos;
     };
+    
 }
 
 #endif /* defined(__XML_Parser__Input__) */
