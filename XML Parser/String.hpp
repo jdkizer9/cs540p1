@@ -33,6 +33,17 @@ namespace xml{
         int compare(const char *) const;
         int compare(const String &) const;
         
+        //find functions
+        //return the offset from a given offset in the String
+        //overload to accept char, int(*fp)(int), or const char *
+        //to accept built-in search functions (e.g., isalpha)
+        //return -1 in case of not being able to find it
+        //return -2 in case where offset >= len
+        int find(int, char) const;
+        int find(int, int(*)(int)) const;
+        int find(int, const String &) const;
+        
+        
         //index operator
         char operator[](size_t);
         

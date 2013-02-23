@@ -9,6 +9,7 @@
 #include "String.hpp"
 #include <string>
 #include <iostream>
+#include <assert.h>
 
 namespace xml {
 
@@ -58,6 +59,60 @@ namespace xml {
         if (s.len != len)
             return -1;
         return strncmp(s.ptr, ptr, len);
+    }
+    
+    int String::find(int offset, const char c)  const {
+        std::cout<<"Calling char version\n";
+        //boundary checking
+        if (offset >= len) {
+            assert(false);
+            return -2;
+        }
+        
+        //look for c
+        for (int i=offset; i<len; i++)
+            if (ptr[i] == c)
+                return i-offset;
+        
+        //c not found
+        return -1;
+        
+    }
+    
+    int String::find(int offset, int(*fp)(int))  const {
+        
+        //boundary checking
+        if (offset >= len) {
+            assert(false);
+            return -2;
+        }
+        
+        //look for matching character
+        for (int i=offset; i<len; i++)
+            if (fp(ptr[i]))
+                return i-offset;
+        
+        //c not found
+        return -1;
+        
+    }
+    
+    int String::find(int offset, const String &s)  const {
+        std::cout<<"Calling String Version\n";
+        //boundary checking
+        if (offset+s.len >= len) {
+            //assert(false);
+            return -2;
+        }
+        
+        //look for matching String
+        for (int i=offset; i+s.len<=len; i++)
+            if (strncmp(s.ptr, ptr+i, s.len) == 0)
+                return i-offset;
+        
+        //c not found
+        return -1;
+        
     }
     
     char String::operator[](size_t i) {
