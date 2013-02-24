@@ -11,10 +11,11 @@
 #include <stdio.h>
 #endif
 #include <iostream>
+#include <assert.h>
 
 using namespace xml;
 
-Input::Input(const char *s, const size_t l) : s(s, (int)l), pos(0) {
+Input::Input(const char *s, const size_t l) : String(s, (int)l), pos(0) {
     //std::cout << "Constructing Input" <<std::endl;
 }
 
@@ -26,7 +27,7 @@ Input::Input(const char *s, const size_t l) : s(s, (int)l), pos(0) {
 char
 Input::get_char() {
     
-    char c = s[pos];
+    char c = this->get_ptr()[pos];
 
     if (c != '\0')
         pos++;
@@ -35,7 +36,7 @@ Input::get_char() {
 }
 
 const char Input::peek() const {
-    return s[pos];
+    return this->get_ptr()[pos];
 }
 
 size_t
@@ -44,18 +45,45 @@ Input::get_pos() const {
 }
 
 const char * Input::get_abs_pos() const {
-    return s.get_ptr()+pos;
+    return this->get_ptr()+pos;
 }
 
-char Input::operator[](size_t i) const {
-    return s[i];
+int Input::left() const {
+    assert(get_len()>=pos);
+    return get_len()-(int)pos;
 }
+
+Input &Input::operator+=(const size_t i) {
+    pos+=i;
+    return *this;
+}
+
 
 String Input::readUnitl(char c) {
-    int offset = s.find((int)pos, c);
-    const char *tmpPos = pos+s.get_ptr();
+    int offset = find((int)pos, c);
+    //the expected character was not found,
+    //set pos = len and return String to end
+    if (offset == -1) {
+        const char *tmpPos = this->get_len()+this->get_ptr();
+        pos = this->get_len();
+        offset = 0;
+        return String(tmpPos, offset);
+    } else {
+        const char *tmpPos = pos+this->get_ptr();
+        pos += offset;
+        return String(tmpPos, offset);
+    }
+}
+
+String Input::readUnitl(int(*fp)(int)) {
+    int offset = find((int)pos, fp);
+    const char *tmpPos = pos+this->get_ptr();
     pos += offset;
     return String(tmpPos, offset);
+}
+
+void Input::PrintNext5Chars() {
+    std::cout << "The next 5 input chars are: "<<String(this->get_ptr()+pos, 5)<<std::endl;
 }
 
 

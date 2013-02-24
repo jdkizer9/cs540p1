@@ -13,7 +13,18 @@ namespace xml {
     
     Element::~Element() {
         std::cout << "Destructing Element" <<std::endl;
+        //needs to destroy all children by removing them from
+        //the deque and deleting them
+        //Elements are dynamically allocated in processStartTag
         
+        //needs to destroy all definedNSIs by removing them from
+        //the deque, then delete the deque
+        
+        
+    }
+    
+    void Element::addChild(const Node *node) {
+        children.push_back(node);
     }
     
     const String &Element::name() const {

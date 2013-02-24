@@ -22,14 +22,14 @@ namespace xml{
         // Assignment.
         String &operator=(const String &);
         
-        String slice(int, int);
-        
         //"Internal" Public Interface
     public:
         String();
         String(const char *, int);
         String(const char *);
         void Print(std::ostream &) const;
+
+        String slice(int, int);
         
         //compares first len bytes
         int compare(const char *) const;
@@ -49,14 +49,24 @@ namespace xml{
         //offset to first instance of char
         //String &readUntil(int, char) const;
         
+        //provide String validity checks
+        bool isEmpty() const;
+        
+        //ensures that every char is valid according to input function
+        bool isValid(int(*)(int)) const;
+        
         
         //index operator
         char operator[](size_t) const;
         
-        //accessor
-        const char *get_ptr() const;
+        
         
         ~String();
+        
+    protected:
+        //accessor
+        const char *get_ptr() const;
+        int get_len() const;
         
     private:
         const char *ptr;

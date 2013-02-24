@@ -13,23 +13,34 @@
 #include <cstring>
 
 namespace xml {
-    class Input {
+    class Input : public String {
     public:
         Input(const char *, const size_t);
         char get_char();
         const char peek() const;
         size_t get_pos() const;
         const char * get_abs_pos() const;
-        //index operator
-        char operator[](size_t) const;
+        int left() const;
+        
+        
+        Input &operator+=(const size_t);
+        
         
         //simulates reading input until char found
         //returns characters in string
         String readUnitl(char);
+        String readUnitl(int(*)(int));
+        
+        void PrintNext5Chars();
         
         ~Input();
+    
+//    inherrited from String
+//    protected:
+//        const char *get_ptr() const;
+//        int get_len() const;
+        
     private:
-        String s;
         size_t pos;
     };
     

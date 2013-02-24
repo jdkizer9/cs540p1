@@ -122,6 +122,22 @@ namespace xml {
         
     }
     
+    bool String::isEmpty() const {
+        return (len == 0);
+    }
+    
+    //check for String validity
+    bool String::isValid(int (*fp)(int)) const {
+        
+        if (isEmpty())
+            return false;
+        for (int i=0; i<len; i++) {
+            if (!fp(ptr[i]))
+                return false;
+        }
+        return true;
+    }
+    
     char String::operator[](size_t i) const {
         
         if (i >= len) {
@@ -133,6 +149,10 @@ namespace xml {
 
     const char *String::get_ptr() const {
         return ptr;
+    }
+    
+    int String::get_len() const {
+        return len;
     }
     
     String::~String() {

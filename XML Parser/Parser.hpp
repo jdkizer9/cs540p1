@@ -26,7 +26,7 @@ namespace xml {
         
     private:
         
-        int processStartTag(Input &);
+        Element *processStartTag(Input &);
         
         
         //Stack of elements
@@ -60,6 +60,11 @@ namespace xml {
         //Associative array of String stacks
         //keys=nmspace prefix, values=stack of URIs associated with each nmspace
         //stacks needed to ensure that the correct URI is in scope
+        //I believe that this can be improved by switching from std::string
+        //to String. However, "class Hash = hash<Key>" needs to be implemented.
+        //This still works, just could be more mem efficient.
+        //This would also allow use to change xmlnsPairs and definedNSIs
+        //also, need to figure out a way to clean this up after running
         std::unordered_map<std::string, std::stack<const String>> NSTable;
         
         //associative array of xmlns pairs
@@ -73,13 +78,41 @@ namespace xml {
         //See sample usage of iteration at:
         //http://www.cplusplus.com/reference/unordered_map/unordered_map/begin/
         
-        static const String beginCommentTag;
-        static const String endCommentTag;
-        static const String beginEndElementTag;
+        const String beginCommentTag;
+        const String endCommentTag;
+        const String beginEndElementTag;
+        const String xmlnsTag;
         
         
     };
-    int isAlphaNumOrUS(int);
+    inline int isAlphaNumOrUS(int c) {
+        if(c == '_')
+            return !0;
+        else
+            return isalnum(c);
+    }
+    
+    inline int notAlphaNumOrUS(int c) {
+        return !isAlphaNumOrUS(c);
+    }
+    
+    inline int notspace(int c) {
+        return !isspace(c);
+    }    
+    
+    inline int isColSpaceOrRA(int c) {
+        if(c == ':')
+            return !0;
+        else if (c == '>')
+            return !0;
+        else
+            return isspace(c);
+    }
+    
+    inline int notColSpaceOrRA(int c) {
+        return !isColSpaceOrRA(c);
+    }
+    
 }
 
 #endif /* defined(__XML_Parser__Parser__) */
