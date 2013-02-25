@@ -31,7 +31,7 @@ namespace xml {
         
         Element *e = new Element;
         String tmpString;
-        char pk, ch;
+        char pk;
         
         
         //properly formatted Element Start Tags will be in the following format:
@@ -77,7 +77,9 @@ namespace xml {
         
         //create a local table for binding resolutions
         //this will make it easy to check for duplicate NSIs in the element
-        std::unordered_map<std::string, String> xmlnsPairs;
+        //std::unordered_map<std::string, String> xmlnsPairs;
+        //Should this come off the heap??
+        std::unordered_map<const String, String, std::hash<std::string>> xmlnsPairs;
         
         while (isspace(in.peek())) {
             //ignore all whitespace
@@ -144,11 +146,12 @@ namespace xml {
             xmlnsPairs[nsibind] = uribind;
         }
         
-        e->definedNSIs = new std::deque<std::string>;
+        e->definedNSIs = new std::deque<String>;
+        assert(NSTable != nullptr);
         for ( auto it = xmlnsPairs.begin(); it != xmlnsPairs.end(); ++it ) {
             std::cout<<"Adding Binding to NSTable: NSI=\'"<<it->first<<"\', URI=\'"<<it->second<<"\'\n";
-            NSTable[it->first].push(it->second);
-            e->definedNSIs->push_back(it->first);
+            (*NSTable)[it->first].push(it->second);
+            e->definedNSIs->push_front(it->first);
         }
 
         
@@ -163,26 +166,173 @@ namespace xml {
         if (!e->nsi.isEmpty()) {
             //if the NSI has not been bound to anything,
             //flag an error
-            if (NSTable[e->nsi].empty()) {
+            if ((*NSTable)[e->nsi].empty()) {
                 std::cerr << "Invalid input while processing start tag 8"<<std::endl;
                 delete e;
                 return nullptr;
             }
             //Otherwise, resolve the namespace
-            e->URI = NSTable[e->nsi].top();
+            e->URI = (*NSTable)[e->nsi].top();
         }
+        
+        
+        //Now that we have successfully created an element,
+        //We need to decide where to store it.
+        //If we have not found the root element, we must have just processed it
+        if (!foundRoot) {
+            //do some assertions
+            assert(root == nullptr);
+            assert(elementStack != nullptr);
+            assert(elementStack->empty() == true);
+            foundRoot = true;
+            root = e;
+        } else {
+            //Not the root element, the element at the top of the
+            //element stack is the parent, add there
+            //do some assertions
+            assert(root != nullptr);
+            assert(elementStack->empty() != true);
+            Element *parent = elementStack->top();
+            parent->addChild(e);
+        }
+        //push the new element to the top of the element stack
+        elementStack->push(e);
+        e->PrintElement();       
         
         return e;
     }
     
+    int Parser::processEndTag(Input &in)
+    {
+        
+        assert(in.peek() == '/');
+        //should now be pointing to the first char of the
+        //elem name / NSI
+        in+=1;
+        
+        assert(!elementStack->empty());
+        //the element on the top of the element stack MUST
+        //be the element we are processing, and it must
+        //have the same NSI
+        Element *e = elementStack->top();
+        
+        //Step 1:
+        //Read Unil a character is found thats not a valid NSI or Name char
+        //This provides either:
+        //a)NSI in the case of ':'
+        //b)Element name in the case of whitespace or '>'
+        //c)invalid input in the case of anything else
+        
+        String tmpString = in.readUnitl(notAlphaNumOrUS);
+        std::cout<<"Found tmpString="<<tmpString<<std::endl;
+        //pk = in.peek();
+        if ( in.peek() == ':') {
+            if (e->nsi != tmpString) {
+                std::cerr << "End Tag NSI does not match the current element's NSI"<<std::endl;
+                return -1;
+            }
+        } else if ( in.peek() == '>' || isspace(in.peek())){
+            if (e->eName != tmpString) {
+                std::cerr << "End Tag Name does not match the current element's Name"<<std::endl;
+                return -1;
+            }
+        } else {
+            std::cerr << "Invalid input while processing end tag 1"<<std::endl;
+            return -1;
+        }
+        
+        //if NSI was just found, get element name
+        if ( in.peek() == ':') {
+            tmpString = in.readUnitl(notAlphaNumOrUS);
+            //pk = in.peek();
+            if ( in.peek() == '>' || isspace(in.peek())){
+                if (e->eName != tmpString) {
+                    std::cerr << "End Tag Name does not match the current element's Name"<<std::endl;
+                    return -1;
+                }
+            } else {
+                std::cerr << "Invalid input while processing end tag 2"<<std::endl;
+                return -1;
+            }
+        }
+        //based on control flow, the current char should be either
+        // '>' or space
+        assert(in.peek() == '>' || isspace(in.peek()));
+        
+        //handle interpunct
+        in.readUnitl(notspace);
+        
+        if (in.peek() == '>') {
+            std::cerr << "Invalid input while processing end tag 3"<<std::endl;
+            return -1;
+        }
+        
+        //we are now assured that we have valid input.
+        //cleanup element
+        //1) for each item in definedNSIs, pop the stack for the NSI
+        //   in NSTable
+        //2) pop the element off the element stack
+        
+        if (!e->definedNSIs->empty()) {
+            for ( auto it = e->definedNSIs->begin(); it != e->definedNSIs->end(); ++it )
+            {
+                //guarantee that this exists
+                assert(!(*NSTable)[*it].empty());
+                (*NSTable)[*it].pop();
+            }
+        }
+        assert(e->definedNSIs->empty());
+        elementStack->pop();
+        
+        
+        //input stream in a known state
+        assert(in.peek() == '>');
+        return 0;
+    }
     
+    
+    void Parser::parser_init(){
+        
+        assert(foundRoot == false);
+        assert(elementStack == nullptr);
+        assert(NSTable == nullptr);
+        
+        if (root != nullptr) {
+            
+            //it is not our responsibilty to delete root
+            //the user may still be using this
+            //delete root;
+            root = nullptr;
+        }
+        
+        elementStack = new std::stack<Element *>;
+        NSTable = new std::unordered_map<const String, std::stack<const String>, std::hash<std::string>>;
+        
+    }
+    
+    void Parser::parser_cleanup() {
+        
+        
+        foundRoot = false;
+        
+        if (elementStack != nullptr)
+        {
+            delete elementStack;
+            elementStack = nullptr;
+        }
+        
+        if (NSTable != nullptr)
+        {
+            delete NSTable;
+            NSTable = nullptr;
+        }
+        
+    }
 const Element *Parser::parse(const char *doc, size_t sz)
 {
 
     Input in(doc, sz);
-    //root = new Element();
     char ch;
-    int retVal;
     bool readChar = true;
     
     enum {
@@ -194,6 +344,8 @@ const Element *Parser::parse(const char *doc, size_t sz)
         COMMENT,
         END
     } state = WHITESPACE;
+    
+    parser_init();
     
     while (state != END)
     {
@@ -230,10 +382,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                         std::cerr<<"Invalid input while looking for root element\n";
                     else
                         std::cerr<<"Invalid input at end of stream\n";
-                    
-                    if (root == nullptr)
-                        root = new Element;
-                    return root;
+                    state = END;
                 }
                 
             }
@@ -249,31 +398,24 @@ const Element *Parser::parse(const char *doc, size_t sz)
                         state = END;
                         break;
                     }
-                    
-                    //Now that we have successfully created an element,
-                    //We need to decide where to store it.
-                    //If we have not found the root element, we must have just processed it
-                    if (!foundRoot) {
-                        //do some assertions
-                        assert(root == nullptr);
-                        assert(elementStack.empty() == true);
-                        foundRoot = true;
-                        root = newElement;
-                    } else {
-                        //Not the root element, the element at the top of the
-                        //element stack is the parent, add there
-                        //do some assertions
-                        assert(root != nullptr);
-                        assert(elementStack.empty() != true);
-                        Element *parent = elementStack.top();
-                        parent->addChild(newElement);                        
-                    }
-                    //push the new element to the top of the element stack
-                    elementStack.push(newElement);
-                    
+                                        
+                    assert(newElement == elementStack->top());
                     assert(in.peek() == '>');
                 }
                 
+                //element end tag
+                else if (in.peek() == '/') {
+                 
+                    int err = processEndTag(in);
+                    if (err != 0) {
+                        state = END;
+                        break;                        
+                    }
+                    assert(in.peek() == '>');
+                }
+                
+                //comment
+            
                 
                 
                 
@@ -323,6 +465,8 @@ const Element *Parser::parse(const char *doc, size_t sz)
         
     }
     
+    //do parser cleanup
+    parser_cleanup();
     
     std::cout<<"\nReturing root element from parser\n";
     if (root == nullptr)

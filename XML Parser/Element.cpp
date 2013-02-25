@@ -46,4 +46,14 @@ namespace xml {
     void Element::set_URI(const String &s) {
         URI = s;
     }
+    
+    void Element::PrintElement() const {
+        std::cout << "Element Name: " <<eName<<std::endl;
+        std::cout << "NSI: " <<eName<<std::endl;
+        std::cout << "URI: " <<eName<<std::endl;
+        std::cout << "Its NSI bindings are as follows:"<<std::endl;
+        for (std::deque<String>::iterator it = definedNSIs->begin(); it!=definedNSIs->end(); ++it)
+            std::cout << *it <<std::endl;
+    }
+    
 }

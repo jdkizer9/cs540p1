@@ -213,6 +213,16 @@ namespace xml {
         S.Print(out);
         return out;
     }
+    
+    ::std::size_t StringHashFunction::operator ()(const String &s) const {
+        std::hash<std::string> str_hash;
+        return str_hash(s);
+    }
+    
+    bool StringEqual::operator ()(const String &a, const String &b) const {
+        return a == b;
+    }
+    
 
 
 

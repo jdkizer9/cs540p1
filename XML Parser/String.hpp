@@ -72,6 +72,8 @@ namespace xml{
         const char *ptr;
         int len;
     };
+    
+    
 //}
 //using namespace xml;
 // Comparison with std::string.
@@ -92,6 +94,15 @@ bool operator!=(const String &, const String &);
 // Output operator
 std::ostream &operator<<(std::ostream &, const String &);
     
+    
+class StringHashFunction {
+public:
+    ::std::size_t operator ()(const String &s) const;
+};
+class StringEqual {
+public:
+    bool operator ()(const String &a, const String &b) const;
+};
 
 }
 

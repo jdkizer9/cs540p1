@@ -27,6 +27,11 @@ namespace xml {
     private:
         
         Element *processStartTag(Input &);
+        int processEndTag(Input &);
+        
+        //parser per-run init and cleanup functions
+        void parser_init();
+        void parser_cleanup();
         
         
         //Stack of elements
@@ -52,7 +57,10 @@ namespace xml {
 //            myStack2.pop();
 //        }
 //        cout << endl;
-        std::stack<Element *> elementStack;
+        
+        //the element stack and the NSTable can be created dynamically when
+        //beginning the parser, and deleted upon exiting
+        std::stack<Element *> *elementStack;
         bool foundRoot;
         Element *root;
         
@@ -65,7 +73,8 @@ namespace xml {
         //This still works, just could be more mem efficient.
         //This would also allow use to change xmlnsPairs and definedNSIs
         //also, need to figure out a way to clean this up after running
-        std::unordered_map<std::string, std::stack<const String>> NSTable;
+        //std::unordered_map<const String, std::stack<const String>, const StringHashFunction, const StringEqual> *NSTable;
+        std::unordered_map<const String, std::stack<const String>, std::hash<std::string>> *NSTable;
         
         //associative array of xmlns pairs
         //technically, only a list of NSIs is necessary to live in the element

@@ -84,7 +84,10 @@ namespace xml{
         //END_TAG processing
         //This is dynamically created during processStartTag
         //this could technically be destroyed after END_TAG processing
-        std::deque<std::string> *definedNSIs;
+        //std::deque<std::string> *definedNSIs;
+        std::deque<String> *definedNSIs;
+        
+        void PrintElement() const;
         
         friend class Parser;
         
