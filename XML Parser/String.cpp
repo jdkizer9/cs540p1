@@ -148,6 +148,7 @@ namespace xml {
     }
 
     const char *String::get_ptr() const {
+        
         return ptr;
     }
     

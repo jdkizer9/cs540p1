@@ -59,6 +59,7 @@ namespace xml {
         
         //if NSI was just found, get element name
         if ( in.peek() == ':') {
+            in+=1;
             tmpString = in.readUnitl(notAlphaNumOrUS);
             //pk = in.peek();
             if ( in.peek() == '>' || isspace(in.peek())){
@@ -92,7 +93,9 @@ namespace xml {
             //all NS bindings must start with 'xmlns:'
             //therefore, 'xmlns:' must be at the current input position
             //otherwise, invalid input
-            if (in.find(0, xmlnsTag) != 0) {
+            
+            //if (in.find(0, xmlnsTag) != 0) {
+            if (in.find((int)in.get_pos(), "xmlns:") != 0) {
                 std::cerr << "Invalid input while processing start tag 3"<<std::endl;
                 delete e;
                 return nullptr;
@@ -210,7 +213,11 @@ namespace xml {
         //elem name / NSI
         in+=1;
         
-        assert(!elementStack->empty());
+        //assert(!elementStack->empty());
+        if(elementStack->empty()) {
+            std::cerr << "The root end tag has already been processed"<<std::endl;
+            return -1;
+        }
         //the element on the top of the element stack MUST
         //be the element we are processing, and it must
         //have the same NSI
@@ -243,8 +250,10 @@ namespace xml {
         
         //if NSI was just found, get element name
         if ( in.peek() == ':') {
+            in+=1;
             tmpString = in.readUnitl(notAlphaNumOrUS);
             //pk = in.peek();
+            
             if ( in.peek() == '>' || isspace(in.peek())){
                 if (e->eName != tmpString) {
                     std::cerr << "End Tag Name does not match the current element's Name"<<std::endl;
@@ -258,11 +267,12 @@ namespace xml {
         //based on control flow, the current char should be either
         // '>' or space
         assert(in.peek() == '>' || isspace(in.peek()));
-        
+        in.PrintNext5Chars();
         //handle interpunct
         in.readUnitl(notspace);
+        in.PrintNext5Chars();
         
-        if (in.peek() == '>') {
+        if (in.peek() != '>') {
             std::cerr << "Invalid input while processing end tag 3"<<std::endl;
             return -1;
         }
@@ -281,8 +291,12 @@ namespace xml {
                 (*NSTable)[*it].pop();
             }
         }
-        assert(e->definedNSIs->empty());
+        //this can be deleted now
+        delete e->definedNSIs;
+        e->definedNSIs = nullptr;
+        assert( (elementStack->size()==1)?(elementStack->top() == root):(elementStack->size()>1));
         elementStack->pop();
+        
         
         
         //input stream in a known state
@@ -317,6 +331,9 @@ namespace xml {
         
         if (elementStack != nullptr)
         {
+            //this may not be true in the case of an error
+            //remove assertion
+            //assert(elementStack->empty());
             delete elementStack;
             elementStack = nullptr;
         }
@@ -333,7 +350,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
 
     Input in(doc, sz);
     char ch;
-    bool readChar = true;
+    //bool readChar = true;
     
     enum {
         WHITESPACE = 1,
@@ -347,14 +364,16 @@ const Element *Parser::parse(const char *doc, size_t sz)
     
     parser_init();
     
+    ch = in.peek();
+    
     while (state != END)
     {
-        if (readChar)
-        {
-            readChar = false;
-            ch = in.get_char();
-        }
-        if (ch == '\0')
+//        if (readChar)
+//        {
+//            readChar = false;
+//            ch = in.peek();
+//        }
+        if (in.peek() == '\0')
             break;
         
         switch (state)
@@ -365,14 +384,16 @@ const Element *Parser::parse(const char *doc, size_t sz)
             case WHITESPACE:
             {
                 //if more whitespace, get next char
-                if(isspace(ch))
-                {
-                    //read another char on loop
-                    readChar = true;
-                    break;
-                }
+//                if(isspace(ch))
+//                {
+//                    //read another char on loop
+//                    readChar = true;
+//                    break;
+//                }
                 
-                if ( (ch == '<') && !foundRoot ) {
+                in.readUnitl(notspace);
+                
+                if ( (in.peek() == '<') && !foundRoot ) {
                     state = LEFT_ANGLE;
                 }
                 //if found a character other than < before root node start tag
@@ -390,7 +411,11 @@ const Element *Parser::parse(const char *doc, size_t sz)
 
             case LEFT_ANGLE:
             {
+                
+                assert(in.peek() == '<');
+                in+=1;
                 //new element start tag
+                in.PrintNext5Chars();
                 if (isAlphaNumOrUS(in.peek())) {
                     
                     Element *newElement = processStartTag(in);
@@ -405,30 +430,54 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 
                 //element end tag
                 else if (in.peek() == '/') {
-                 
                     int err = processEndTag(in);
                     if (err != 0) {
                         state = END;
                         break;                        
                     }
                     assert(in.peek() == '>');
+                } 
+                
+                //Comment
+                else if (in.find((int)in.get_pos(), "!--") == 0) {
+                    
+                    if(elementStack->empty()) {
+                        std::cerr << "Found invalid comment after final element"<<std::endl;
+                        state = END;
+                    }
+                    
+                    std::cout<<"Processing Comment\n";
+                    String s = in.readUnitl("-->");
+                    if (s.isEmpty()) {
+                        std::cerr << "Invalid input while processing comment"<<std::endl;
+                        state = END;
+                    }
+                    //the state below expects current character
+                    //to be '>'
+                    in+=2;
+                    assert(in.peek() == '>');
+                    in.PrintNext5Chars();
+                } else {
+                    std::cerr << "Invalid input while processing open angle bracket"<<std::endl;
+                    state = END;
+                    break;
                 }
                 
-                //comment
-            
                 
+                assert(in.peek() == '>');
+                //after processing either start tag, end tag, or
+                //comment, determine which state to transition to
+                in+=1;
+                ch = in.peek();
+                in.PrintNext5Chars();
+                if (ch == '<') {
+                    state = LEFT_ANGLE;
+                } else if (ch == '\0') {
+                    state = END;
+                } else {
+                    state = CONTENT;
+                }
                 
-                
-//                if (ch=='!') {
-//                    printf("Found Comment\n");
-//                    state = COMMENT;
-//                } else if ((ch=='_') || (isalnum(ch))) {
-//                    printf("Found START_TAG\n");
-//                    state = START_TAG;
-//                } else if (ch == '/') {
-//                    printf("Found END_TAG\n");
-//                    state = END_TAG;
-//                }
             }
                 break;
 //
@@ -447,12 +496,34 @@ const Element *Parser::parse(const char *doc, size_t sz)
 //            }
 //                break;
 //                
-//            case CONTENT:
-//            {
-//                
-//            }
-//                break;
-//                
+            case CONTENT:
+            {
+                
+                in.PrintNext5Chars();
+                if(elementStack->empty()) {
+                    std::cerr << "The root end tag has already been processed"<<std::endl;
+                    state = END;
+                }
+                String textString = in.readUnitl('<');
+                in.PrintNext5Chars();
+                if (textString.isEmpty()) {
+                    std::cerr << "Invalid input while text"<<std::endl;
+                    state = END;
+                    break;
+                }
+                //valid text
+                //create new node and add it to the element at the
+                //top of the element stack
+                Text *t = new Text(textString);
+                assert(!elementStack->empty());
+                Element *e = elementStack->top();
+                e->addChild(t);
+                assert(in.peek() == '<');
+                state = LEFT_ANGLE;
+                
+            }
+                break;
+//
 //            case COMMENT:
 //            {
 //                

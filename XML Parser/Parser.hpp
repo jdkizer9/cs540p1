@@ -74,6 +74,8 @@ namespace xml {
         //This would also allow use to change xmlnsPairs and definedNSIs
         //also, need to figure out a way to clean this up after running
         //std::unordered_map<const String, std::stack<const String>, const StringHashFunction, const StringEqual> *NSTable;
+        
+        //Could turn this into a class
         std::unordered_map<const String, std::stack<const String>, std::hash<std::string>> *NSTable;
         
         //associative array of xmlns pairs

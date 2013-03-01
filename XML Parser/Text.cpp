@@ -11,6 +11,9 @@
 
 
 namespace xml {
+    
+    Text::Text(String &s): text(s){};
+    
     Text::~Text() {
         std::cout << "Destructing Text" <<std::endl;
     }

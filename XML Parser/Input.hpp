@@ -24,12 +24,14 @@ namespace xml {
         
         
         Input &operator+=(const size_t);
+        Input &operator-=(const size_t);
         
         
         //simulates reading input until char found
         //returns characters in string
         String readUnitl(char);
         String readUnitl(int(*)(int));
+        String readUnitl(const String &s);
         
         void PrintNext5Chars();
         
@@ -41,6 +43,7 @@ namespace xml {
 //        int get_len() const;
         
     private:
+        String readUntilHelper(int);
         size_t pos;
     };
     

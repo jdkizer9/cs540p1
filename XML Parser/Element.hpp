@@ -41,7 +41,7 @@ namespace xml{
         static const Element *to_Element(const Node *);
     public:
         // You could add more to the public interface, if you wanted to.
-        void addChild(const Node *);
+        
         
         //This must destroy all the child nodes
         //base destructor is virtual
@@ -50,6 +50,7 @@ namespace xml{
                
     private:
         // Private things for your implementation.
+        void addChild(const Node *);
         
         //Most of the private variables may need to be updated after construction
         //would be helpful for nsi, eName, URI, definitely children and definedNSIs

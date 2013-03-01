@@ -60,12 +60,18 @@ int main(int argc, const char * argv[])
     }
     
     Parser parser;
-    const Element *r;
+    const Element *r, *r2;
     
     
     cout<<"Calling Parser"<<endl;
     r = parser.parse(doc, sb.st_size);
     cout<<"Returned from Parser\nDeleting Root Node"<<endl;
+    
+    
+    cout<<"Calling Parser"<<endl;
+    r2 = parser.parse(doc, sb.st_size);
+    cout<<"Returned from Parser\nDeleting Root Node"<<endl;
+    
     delete r;
     
     
