@@ -47,9 +47,9 @@
 		4893209D16D2ADD600E44DCF /* Visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Visitor.cpp; sourceTree = "<group>"; };
 		4893209E16D2ADD600E44DCF /* Visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Visitor.hpp; sourceTree = "<group>"; };
 		489320A416D3188E00E44DCF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		489320A716D31BCC00E44DCF /* test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = test.xml; path = Build/test.xml; sourceTree = SOURCE_ROOT; };
 		489320A816D4726200E44DCF /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
 		489320A916D4726200E44DCF /* Input.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Input.hpp; sourceTree = "<group>"; };
+		48B7D9C116D86CED00368B57 /* test.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = test.xml; path = "../../../../../Library/Developer/Xcode/DerivedData/XML_Parser-ewzyjqryddcsrxhesmgvxqtknsjw/Build/Products/Debug/test.xml"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 		4893208116D2A8FC00E44DCF /* XML Parser */ = {
 			isa = PBXGroup;
 			children = (
-				489320A716D31BCC00E44DCF /* test.xml */,
+				48B7D9C116D86CED00368B57 /* test.xml */,
 				489320A416D3188E00E44DCF /* main.cpp */,
 				4893208416D2A8FD00E44DCF /* XML_Parser.1 */,
 				4893208B16D2A91100E44DCF /* Node.cpp */,
