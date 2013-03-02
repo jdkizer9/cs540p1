@@ -36,7 +36,7 @@ Input::get_char() {
 }
 
 const char Input::peek() const {
-    assert(pos <= get_len());
+    assert(pos <= (size_t)get_len());
     return this->get_ptr()[pos];
 }
 
@@ -50,14 +50,14 @@ const char * Input::get_abs_pos() const {
 }
 
 int Input::left() const {
-    assert(get_len()>=pos);
+    assert((size_t)get_len()>=pos);
     return get_len()-(int)pos;
 }
 
 Input &Input::operator+=(const size_t i) {
     pos+=i;
-    if (pos > get_len())
-        pos = get_len();
+    if (pos > (size_t)get_len())
+        pos = (size_t)get_len();
     return *this;
 }
 
@@ -66,7 +66,7 @@ Input &Input::operator-=(const size_t i) {
     if (i >= pos)
         pos = 0;
     else
-        pos = pos-=i;
+        pos-=i;
     return *this;
 }
 
@@ -107,12 +107,12 @@ String Input::readUntilHelper(int offset) {
     //set pos = len and return String to end
     if (offset < 0) {
         const char *tmpPos = this->get_len()+this->get_ptr();
-        pos = this->get_len();
+        pos = (size_t)this->get_len();
         offset = 0;
         return String(tmpPos, offset);
     } else {
         const char *tmpPos = pos+this->get_ptr();
-        pos += offset;
+        pos += (size_t)offset;
         return String(tmpPos, offset);
     }
 }

@@ -7,16 +7,16 @@
 //
 
 #include "String.hpp"
-#include <string>
+#include <string.h>
 #include <iostream>
 #include <assert.h>
 
-static int ctorCalls = 0;
+//static int ctorCalls = 0;
 static int dtorCalls = 0;
 namespace xml {
 
     // Copy constructor.
-    static int copyConstructorCalls=0;
+    //static int copyConstructorCalls=0;
     String::String(const String &s) : ptr(s.ptr), len(s.len) {
         //std::cout << "Called the copy ctor" << std::endl;
         //copyConstructorCalls++;
@@ -25,24 +25,24 @@ namespace xml {
     
     // Conversion to std::string.
     String::operator std::string() const {
-        return std::string(ptr, len);
+        return std::string(ptr, (size_t)len);
     }
     
-    static int twoConstructorCalls=0;
+    //static int twoConstructorCalls=0;
     String::String(const char *p, int l) : ptr(p), len(l) {
         //std::cout << "Called the 2 param ctor" << std::endl;
         //twoConstructorCalls++;
         //ctorCalls++;
     }
     
-    static int oneConstructorCalls=0;
+    //static int oneConstructorCalls=0;
     String::String(const char *p) : ptr(p), len((int)strlen(p)) {
         //std::cout << "Called the 1 param ctor" << std::endl;
         //oneConstructorCalls++;
         //ctorCalls++;
     }
     
-     static int defConstructorCalls=0;
+    //static int defConstructorCalls=0;
     String::String() : ptr(NULL), len(0) {
         //std::cout << "Called the default ctor" << std::endl;
         //defConstructorCalls++;
@@ -75,13 +75,13 @@ namespace xml {
     
     
     int String::compare(const char *cStr) const {
-        return strncmp(cStr, ptr, len);
+        return strncmp(cStr, ptr, (size_t)len);
     }
     
     int String::compare(const String &s) const {
         if (s.len != len)
             return -1;
-        return strncmp(s.ptr, ptr, len);
+        return strncmp(s.ptr, ptr, (size_t)len);
     }
     
     int String::find(int offset, const char c)  const {
@@ -130,7 +130,7 @@ namespace xml {
         
         //look for matching String
         for (int i=offset; i+s.len<=len; i++)
-            if (strncmp(s.ptr, ptr+i, s.len) == 0)
+            if (strncmp(s.ptr, ptr+i, (size_t)s.len) == 0)
                 return i-offset;
         
         //c not found
@@ -156,7 +156,7 @@ namespace xml {
     
     char String::operator[](size_t i) const {
         
-        if (i >= len) {
+        if (i >= (size_t)len) {
             return '\0';
         } else {
             return ptr[i];

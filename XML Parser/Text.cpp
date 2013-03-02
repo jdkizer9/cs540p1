@@ -7,6 +7,7 @@
 //
 
 #include "Text.hpp"
+#include <typeinfo>
 #include <iostream>
 #include <assert.h>
 

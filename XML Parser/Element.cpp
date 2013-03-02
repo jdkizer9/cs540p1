@@ -76,7 +76,7 @@ namespace xml {
     void Element::handleVisitor(Visitor *v) const {
         v->start_element_visit(*this);
         
-        for(int i=0; i<n_children(); i++)
+        for(size_t i=0; i<n_children(); i++)
             child(i)->handleVisitor(v);
         
         v->end_element_visit(*this);      
