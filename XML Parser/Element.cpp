@@ -17,6 +17,8 @@
 
 namespace xml {
     
+    Element::Element() : definedNSIs(nullptr) {}
+    
     Element::~Element() {
         //std::cout << "Destructing Element" <<std::endl;
         //needs to destroy all children by removing them from
@@ -29,7 +31,9 @@ namespace xml {
         }        
         
         //delete definedNSIs
-        delete definedNSIs;        
+        //assert(definedNSIs != nullptr);
+        if (definedNSIs != nullptr)
+            delete definedNSIs;        
         
     }
     

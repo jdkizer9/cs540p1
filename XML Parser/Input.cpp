@@ -105,7 +105,7 @@ String Input::readUnitl(const String &s) {
 String Input::readUntilHelper(int offset) {
     //the expected character was not found,
     //set pos = len and return String to end
-    if (offset == -1) {
+    if (offset < 0) {
         const char *tmpPos = this->get_len()+this->get_ptr();
         pos = this->get_len();
         offset = 0;

@@ -57,7 +57,7 @@ namespace xml {
         return *this;
     }
     
-    String String::slice(int offset, int length) {
+    String String::slice(int offset, int length) const {
         assert(offset+length <= len);
         if (length == -1)
             length = len - offset;
@@ -106,7 +106,7 @@ namespace xml {
         
         //boundary checking
         if (offset >= len) {
-            assert(false);
+            //assert(false);
             return -2;
         }
         

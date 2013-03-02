@@ -42,6 +42,7 @@ namespace xml{
         // You could add more to the public interface, if you wanted to.
         virtual void handleVisitor(Visitor *) const;
         
+        Element();
         //This must destroy all the child nodes
         //base destructor is virtual
         //popping all elements off element deque

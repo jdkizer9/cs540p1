@@ -29,7 +29,7 @@ namespace xml{
         String(const char *);
         void Print(std::ostream &) const;
 
-        String slice(int, int);
+        String slice(int, int) const;
         
         //compares first len bytes
         int compare(const char *) const;
