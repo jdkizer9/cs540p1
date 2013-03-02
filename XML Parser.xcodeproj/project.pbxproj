@@ -7,14 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48556A2116E043E3004BD486 /* parser_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48556A1F16E043E3004BD486 /* parser_test.cpp */; };
 		4893208516D2A8FD00E44DCF /* XML_Parser.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4893208416D2A8FD00E44DCF /* XML_Parser.1 */; };
 		4893208D16D2A91100E44DCF /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893208B16D2A91100E44DCF /* Node.cpp */; };
 		4893209316D2AA7C00E44DCF /* Element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209116D2AA7C00E44DCF /* Element.cpp */; };
 		4893209616D2AB6300E44DCF /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209416D2AB6300E44DCF /* Text.cpp */; };
 		4893209916D2ABD000E44DCF /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209716D2ABD000E44DCF /* Parser.cpp */; };
 		4893209C16D2ACED00E44DCF /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209A16D2ACED00E44DCF /* String.cpp */; };
-		4893209F16D2ADD600E44DCF /* Visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4893209D16D2ADD600E44DCF /* Visitor.cpp */; };
-		489320A516D3188E00E44DCF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 489320A416D3188E00E44DCF /* main.cpp */; };
 		489320AA16D4726200E44DCF /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 489320A816D4726200E44DCF /* Input.cpp */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +31,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		48179B2816E0D56600E8D9F3 /* test-misc.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "test-misc.xml"; path = "Test Code/test_code/good_xml/test-misc.xml"; sourceTree = "<group>"; };
+		48179B2916E0D56600E8D9F3 /* test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = test.xml; path = "Test Code/test_code/good_xml/test.xml"; sourceTree = "<group>"; };
+		48556A1F16E043E3004BD486 /* parser_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parser_test.cpp; path = "Test Code/test_code/parser_test.cpp"; sourceTree = SOURCE_ROOT; };
+		48556A2016E043E3004BD486 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README; path = "Test Code/test_code/README"; sourceTree = SOURCE_ROOT; };
 		4893207F16D2A8FC00E44DCF /* XML Parser */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "XML Parser"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4893208416D2A8FD00E44DCF /* XML_Parser.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = XML_Parser.1; sourceTree = "<group>"; };
 		4893208B16D2A91100E44DCF /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
@@ -44,12 +47,9 @@
 		4893209816D2ABD000E44DCF /* Parser.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Parser.hpp; sourceTree = "<group>"; };
 		4893209A16D2ACED00E44DCF /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
 		4893209B16D2ACED00E44DCF /* String.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = String.hpp; sourceTree = "<group>"; };
-		4893209D16D2ADD600E44DCF /* Visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Visitor.cpp; sourceTree = "<group>"; };
 		4893209E16D2ADD600E44DCF /* Visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Visitor.hpp; sourceTree = "<group>"; };
-		489320A416D3188E00E44DCF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		489320A816D4726200E44DCF /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
 		489320A916D4726200E44DCF /* Input.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Input.hpp; sourceTree = "<group>"; };
-		48B7D9C116D86CED00368B57 /* test.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = test.xml; path = "../../../../../Library/Developer/Xcode/DerivedData/XML_Parser-ewzyjqryddcsrxhesmgvxqtknsjw/Build/Products/Debug/test.xml"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,9 +63,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		48179B2716E0D55300E8D9F3 /* Test Files */ = {
+			isa = PBXGroup;
+			children = (
+				48179B2816E0D56600E8D9F3 /* test-misc.xml */,
+				48179B2916E0D56600E8D9F3 /* test.xml */,
+			);
+			name = "Test Files";
+			sourceTree = "<group>";
+		};
 		4893207616D2A8FC00E44DCF = {
 			isa = PBXGroup;
 			children = (
+				48179B2716E0D55300E8D9F3 /* Test Files */,
 				4893208116D2A8FC00E44DCF /* XML Parser */,
 				4893208016D2A8FC00E44DCF /* Products */,
 			);
@@ -82,8 +92,8 @@
 		4893208116D2A8FC00E44DCF /* XML Parser */ = {
 			isa = PBXGroup;
 			children = (
-				48B7D9C116D86CED00368B57 /* test.xml */,
-				489320A416D3188E00E44DCF /* main.cpp */,
+				48556A1F16E043E3004BD486 /* parser_test.cpp */,
+				48556A2016E043E3004BD486 /* README */,
 				4893208416D2A8FD00E44DCF /* XML_Parser.1 */,
 				4893208B16D2A91100E44DCF /* Node.cpp */,
 				4893208C16D2A91100E44DCF /* Node.hpp */,
@@ -97,7 +107,6 @@
 				4893209816D2ABD000E44DCF /* Parser.hpp */,
 				4893209A16D2ACED00E44DCF /* String.cpp */,
 				4893209B16D2ACED00E44DCF /* String.hpp */,
-				4893209D16D2ADD600E44DCF /* Visitor.cpp */,
 				4893209E16D2ADD600E44DCF /* Visitor.hpp */,
 			);
 			path = "XML Parser";
@@ -159,9 +168,8 @@
 				4893209616D2AB6300E44DCF /* Text.cpp in Sources */,
 				4893209916D2ABD000E44DCF /* Parser.cpp in Sources */,
 				4893209C16D2ACED00E44DCF /* String.cpp in Sources */,
-				4893209F16D2ADD600E44DCF /* Visitor.cpp in Sources */,
-				489320A516D3188E00E44DCF /* main.cpp in Sources */,
 				489320AA16D4726200E44DCF /* Input.cpp in Sources */,
+				48556A2116E043E3004BD486 /* parser_test.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +238,7 @@
 		4893208916D2A8FD00E44DCF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				Memtrace = "-DCS540_MEMTRACE";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -237,6 +246,7 @@
 		4893208A16D2A8FD00E44DCF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				Memtrace = "-DCS540_MEMTRACE";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
