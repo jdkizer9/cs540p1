@@ -11,11 +11,16 @@
 #include <iostream>
 #include <assert.h>
 
+static int ctorCalls = 0;
+static int dtorCalls = 0;
 namespace xml {
 
     // Copy constructor.
+    static int copyConstructorCalls=0;
     String::String(const String &s) : ptr(s.ptr), len(s.len) {
         //std::cout << "Called the copy ctor" << std::endl;
+        //copyConstructorCalls++;
+        //ctorCalls++;
     }
     
     // Conversion to std::string.
@@ -23,14 +28,26 @@ namespace xml {
         return std::string(ptr, len);
     }
     
+    static int twoConstructorCalls=0;
     String::String(const char *p, int l) : ptr(p), len(l) {
         //std::cout << "Called the 2 param ctor" << std::endl;
+        //twoConstructorCalls++;
+        //ctorCalls++;
     }
     
+    static int oneConstructorCalls=0;
     String::String(const char *p) : ptr(p), len((int)strlen(p)) {
         //std::cout << "Called the 1 param ctor" << std::endl;
+        //oneConstructorCalls++;
+        //ctorCalls++;
     }
     
+     static int defConstructorCalls=0;
+    String::String() : ptr(NULL), len(0) {
+        //std::cout << "Called the default ctor" << std::endl;
+        //defConstructorCalls++;
+        //ctorCalls++;
+    }
     
     // Assignment.
     String &String::operator=(const String &s) {
@@ -47,13 +64,12 @@ namespace xml {
         return String(ptr+offset, length);
     }
     
-    String::String() : ptr(NULL), len(0) {
-        //std::cout << "Called the default ctor" << std::endl;
-    }
     
     void String::Print(std::ostream &out) const {
-        for (int i=0; i<len; i++)
-            out.put(ptr[i]);
+        
+        out<<std::string(*this);
+        //for (int i=0; i<len; i++)
+            //out.put(ptr[i]);
         
     }
     
@@ -69,7 +85,7 @@ namespace xml {
     }
     
     int String::find(int offset, const char c)  const {
-        std::cout<<"Calling char version\n";
+        //std::cout<<"Calling char version\n";
         //boundary checking
         if (offset >= len) {
             assert(false);
@@ -105,7 +121,7 @@ namespace xml {
     }
     
     int String::find(int offset, const String &s)  const {
-        std::cout<<"Calling String Version\n";
+        //std::cout<<"Calling String Version\n";
         //boundary checking
         if (offset+s.len >= len) {
             //assert(false);
@@ -161,6 +177,7 @@ namespace xml {
 //        Print(std::cout);
 //        std::cout << std::endl;
         len = 0;
+        dtorCalls++;
     }
     
     
@@ -210,7 +227,7 @@ namespace xml {
     //However, this gets around forcing this to be a friend function for local access.
     //Could use a public Print member function that returns an ostream
     std::ostream &operator<<(std::ostream &out, const String &S) {
-        //out << std::string(S);
+        //out << std::string(S, S.get_len());
         S.Print(out);
         return out;
     }

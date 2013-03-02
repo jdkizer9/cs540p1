@@ -11,7 +11,6 @@
 
 #include "Node.hpp"
 #include "String.hpp"
-#include "Visitor.hpp"
 #include <deque>
 #include <unordered_map>
 
@@ -41,7 +40,7 @@ namespace xml{
         static const Element *to_Element(const Node *);
     public:
         // You could add more to the public interface, if you wanted to.
-        
+        virtual void handleVisitor(Visitor *) const;
         
         //This must destroy all the child nodes
         //base destructor is virtual

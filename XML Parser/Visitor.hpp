@@ -9,12 +9,13 @@
 #ifndef __XML_Parser__Visitor__
 #define __XML_Parser__Visitor__
 
-#include "Element.hpp"
-#include "Text.hpp"
+//#include "Element.hpp"
+//#include "Text.hpp"
 
 namespace xml{
     
     class Element;
+    class Text;
     
     class Visitor {
     public:

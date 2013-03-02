@@ -7,6 +7,7 @@
 //
 
 #include "Parser.hpp"
+#include "Text.hpp"
 #include <deque>
 #include <iostream>
 #include <assert.h>
@@ -45,7 +46,7 @@ namespace xml {
         //c)invalid input in the case of anything else
         
         tmpString = in.readUnitl(notAlphaNumOrUS);
-        std::cout<<"Found tmpString="<<tmpString<<std::endl;
+        //std::cout<<"Found tmpString="<<tmpString<<std::endl;
         //pk = in.peek();
         if ( in.peek() == ':') {
             e->nsi = tmpString;
@@ -152,7 +153,7 @@ namespace xml {
         e->definedNSIs = new std::deque<String>;
         assert(NSTable != nullptr);
         for ( auto it = xmlnsPairs.begin(); it != xmlnsPairs.end(); ++it ) {
-            std::cout<<"Adding Binding to NSTable: NSI=\'"<<it->first<<"\', URI=\'"<<it->second<<"\'\n";
+            //std::cout<<"Adding Binding to NSTable: NSI=\'"<<it->first<<"\', URI=\'"<<it->second<<"\'\n";
             (*NSTable)[it->first].push(it->second);
             e->definedNSIs->push_front(it->first);
         }
@@ -200,7 +201,7 @@ namespace xml {
         }
         //push the new element to the top of the element stack
         elementStack->push(e);
-        e->PrintElement();       
+        //e->PrintElement();
         
         return e;
     }
@@ -231,7 +232,7 @@ namespace xml {
         //c)invalid input in the case of anything else
         
         String tmpString = in.readUnitl(notAlphaNumOrUS);
-        std::cout<<"Found tmpString="<<tmpString<<std::endl;
+        //std::cout<<"Found tmpString="<<tmpString<<std::endl;
         //pk = in.peek();
         if ( in.peek() == ':') {
             if (e->nsi != tmpString) {
@@ -267,10 +268,10 @@ namespace xml {
         //based on control flow, the current char should be either
         // '>' or space
         assert(in.peek() == '>' || isspace(in.peek()));
-        in.PrintNext5Chars();
+        //in.PrintNext5Chars();
         //handle interpunct
         in.readUnitl(notspace);
-        in.PrintNext5Chars();
+        //in.PrintNext5Chars();
         
         if (in.peek() != '>') {
             std::cerr << "Invalid input while processing end tag 3"<<std::endl;
@@ -295,6 +296,9 @@ namespace xml {
         delete e->definedNSIs;
         e->definedNSIs = nullptr;
         assert( (elementStack->size()==1)?(elementStack->top() == root):(elementStack->size()>1));
+        
+        std::cout<<"Removing Element "<< elementStack->top()->nmspace() << ":" << elementStack->top()->name() << std::endl;
+        
         elementStack->pop();
         
         
@@ -376,6 +380,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
         if (in.peek() == '\0')
             break;
         
+        //in.PrintNext5Chars();
         switch (state)
         {
 //            default:
@@ -396,6 +401,11 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 if ( (in.peek() == '<') && !foundRoot ) {
                     state = LEFT_ANGLE;
                 }
+                //if end of data AND root has been found AND elementStack is empty
+                //end of input
+                else if ( (in.peek() == '\0') && foundRoot && (elementStack->empty()) ) {
+                    state = END;
+                }
                 //if found a character other than < before root node start tag
                 //or a character after root node end tag, return error
                 else {
@@ -415,7 +425,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 assert(in.peek() == '<');
                 in+=1;
                 //new element start tag
-                in.PrintNext5Chars();
+                //in.PrintNext5Chars();
                 if (isAlphaNumOrUS(in.peek())) {
                     
                     Element *newElement = processStartTag(in);
@@ -423,9 +433,11 @@ const Element *Parser::parse(const char *doc, size_t sz)
                         state = END;
                         break;
                     }
-                                        
+                    
                     assert(newElement == elementStack->top());
                     assert(in.peek() == '>');
+                    
+                    std::cout<<"Added Element "<< newElement->nmspace() << ":" << newElement->name() << std::endl;
                 }
                 
                 //element end tag
@@ -446,7 +458,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                         state = END;
                     }
                     
-                    std::cout<<"Processing Comment\n";
+                    //std::cout<<"Processing Comment\n";
                     String s = in.readUnitl("-->");
                     if (s.isEmpty()) {
                         std::cerr << "Invalid input while processing comment"<<std::endl;
@@ -456,7 +468,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                     //to be '>'
                     in+=2;
                     assert(in.peek() == '>');
-                    in.PrintNext5Chars();
+                    //in.PrintNext5Chars();
                 } else {
                     std::cerr << "Invalid input while processing open angle bracket"<<std::endl;
                     state = END;
@@ -469,11 +481,13 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 //comment, determine which state to transition to
                 in+=1;
                 ch = in.peek();
-                in.PrintNext5Chars();
+                //in.PrintNext5Chars();
                 if (ch == '<') {
                     state = LEFT_ANGLE;
                 } else if (ch == '\0') {
                     state = END;
+                } else if (elementStack->empty()){
+                    state = WHITESPACE;                    
                 } else {
                     state = CONTENT;
                 }
@@ -499,13 +513,13 @@ const Element *Parser::parse(const char *doc, size_t sz)
             case CONTENT:
             {
                 
-                in.PrintNext5Chars();
+                //in.PrintNext5Chars();
                 if(elementStack->empty()) {
                     std::cerr << "The root end tag has already been processed"<<std::endl;
                     state = END;
                 }
                 String textString = in.readUnitl('<');
-                in.PrintNext5Chars();
+                //in.PrintNext5Chars();
                 if (textString.isEmpty()) {
                     std::cerr << "Invalid input while text"<<std::endl;
                     state = END;
@@ -518,6 +532,8 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 assert(!elementStack->empty());
                 Element *e = elementStack->top();
                 e->addChild(t);
+                
+                std::cout<<"Added Content \""<<textString<<"\""<<std::endl;
                 assert(in.peek() == '<');
                 state = LEFT_ANGLE;
                 
@@ -539,7 +555,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
     //do parser cleanup
     parser_cleanup();
     
-    std::cout<<"\nReturing root element from parser\n";
+    //std::cout<<"\nReturing root element from parser\n";
     if (root == nullptr)
         root = new Element;
     return root;

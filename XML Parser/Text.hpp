@@ -11,8 +11,11 @@
 
 #include "Node.hpp"
 #include "String.hpp"
+#include "Visitor.hpp"
 
 namespace xml {
+    
+    class Visitor;
     class Text : public Node {
     public:
         // Returns the text content as a string.
@@ -24,6 +27,7 @@ namespace xml {
         Text(String &);
         // You could add more to the public interface, if you wanted to.
         
+        virtual void handleVisitor(Visitor *) const;
         //This must destroy all the child nodes
         //base destructor is virtual
         virtual ~Text();
