@@ -328,7 +328,7 @@ namespace xml {
         }
         
         elementStack = new std::stack<Element *>;
-        NSTable = new std::unordered_map<const String, std::stack<const String>, std::hash<std::string>>;
+        NSTable = new std::unordered_map<String, std::stack<String>, std::hash<std::string>, std::equal_to<std::string>  >;
         
     }
     
