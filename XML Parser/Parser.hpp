@@ -76,7 +76,7 @@ namespace xml {
         //std::unordered_map<const String, std::stack<const String>, const StringHashFunction, const StringEqual> *NSTable;
         
         //Could turn this into a class
-        std::unordered_map<const String, std::stack<const String>, std::hash<std::string>> *NSTable;
+        std::unordered_map<String, std::stack<String>, std::hash<std::string>, std::equal_to<std::string> > *NSTable;
         
         //associative array of xmlns pairs
         //technically, only a list of NSIs is necessary to live in the element
