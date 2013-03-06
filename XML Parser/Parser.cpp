@@ -315,9 +315,9 @@ namespace xml {
     
     void Parser::parser_init(){
         
-        assert(foundRoot == false);
-        assert(elementStack == nullptr);
-        assert(NSTable == nullptr);
+        //assert(foundRoot == false);
+        //assert(elementStack == nullptr);
+        //assert(NSTable == nullptr);
         
         if (root != nullptr) {
             
