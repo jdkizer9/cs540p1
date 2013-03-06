@@ -17,18 +17,28 @@
 
 namespace xml {
     
-    Element::Element() : definedNSIs(nullptr) {}
+    Element::Element() : definedNSIs(nullptr), cSize(0), cMaxSize(8) {
+        children = new const Node *[cMaxSize];
+    }
     
     Element::~Element() {
         //std::cout << "Destructing Element" <<std::endl;
         //needs to destroy all children by removing them from
         //the deque and deleting them
         //Elements are dynamically allocated in processStartTag
-        while( !children.empty() ) {
-            const Node *child = children.back();
-            children.pop_back();
+//        while( !children.empty() ) {
+//            const Node *child = children.back();
+//            children.pop_back();
+//            delete child;
+//        }
+        
+        while (cSize > 0) {
+            const Node *child = children[cSize-1];
+            cSize--;
             delete child;
-        }        
+        }
+        
+        delete[] children;
         
         //delete definedNSIs
         //assert(definedNSIs != nullptr);
@@ -38,7 +48,26 @@ namespace xml {
     }
     
     void Element::addChild(const Node *node) {
-        children.push_back(node);
+        //children.push_back(node);
+        
+        //if array is full, double size and copy existing elements
+        //to new array
+        if (cSize == cMaxSize) {
+            cMaxSize = cMaxSize*2;
+            const Node **newChildren = new const Node *[cMaxSize];
+            //copy values to new array
+            for (size_t i=0; i<cSize; i++) {
+                newChildren[i] = children[i];
+            }
+            //delete old array
+            delete children;
+            //reassign children
+            children = newChildren;
+        }
+        
+        //set the cSize-th element to node and increment cSize by 1
+        children[cSize] = node;
+        cSize++;
     }
     
     const String &Element::name() const {
@@ -50,13 +79,19 @@ namespace xml {
     }
     
     size_t Element::n_children() const {
-        return children.size();
+        //return children.size();
+        
+        return cSize;
     }
     
     const Node *Element::child(size_t i) const {
-        if (i >= children.size())
+//        if (i >= children.size())
+//            return nullptr;
+//        return children[i];
+        
+        if (i >= cSize)
             return nullptr;
-        return children[i];
+        return children[i];        
     }
     
     void Element::accept(Visitor *v) const {

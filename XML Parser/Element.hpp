@@ -13,6 +13,7 @@
 #include "String.hpp"
 #include <deque>
 #include <unordered_map>
+#include <vector>
 
 namespace xml{
     
@@ -75,7 +76,13 @@ namespace xml{
         //the Nodes should live here
         //they willbe destroyed when removed the deque in the dtor
         //push to the back
-        std::deque<const Node *> children;
+        //std::deque<const Node *> children;
+        //Most of the program time is spent managing the children deque
+        //try to implement as a vector
+        const Node **children;
+        size_t  cSize;
+        size_t  cMaxSize;
+        
         
         //Defined NSIs deque
         //populated by the parser during START_TAG processing, guaranteed to
@@ -87,6 +94,8 @@ namespace xml{
         //this could technically be destroyed after END_TAG processing
         //std::deque<std::string> *definedNSIs;
         std::deque<String> *definedNSIs;
+        
+        
         
         void PrintElement() const;
         
