@@ -24,12 +24,17 @@ namespace xml {
     Parser::Parser() : foundRoot(false), root(nullptr) {
         //try handling allocate in the parser constructor
         NSTable = new std::unordered_map<String, std::stack<String>, std::hash<std::string>, std::equal_to<std::string>  >;
+        
+        xmlnsPairs = new std::unordered_map<const String, String, std::hash<std::string>>;
     };
     
     Parser::~Parser() {
         //try handling delete in the parser destructor
         delete NSTable;
         NSTable = nullptr;
+        
+        delete xmlnsPairs;
+        xmlnsPairs = nullptr;
     }
     
     //need to be more robust,
@@ -88,7 +93,9 @@ namespace xml {
         //this will make it easy to check for duplicate NSIs in the element
         //std::unordered_map<std::string, String> xmlnsPairs;
         //Should this come off the heap??
-        std::unordered_map<const String, String, std::hash<std::string>> xmlnsPairs;
+        //This could be made much more efficient
+        //moved to member variable
+        //std::unordered_map<const String, String, std::hash<std::string>> xmlnsPairs;
         
         while (isspace(in.peek())) {
             //ignore all whitespace
@@ -147,23 +154,31 @@ namespace xml {
             }
             
             //this binding has already been defined, return an error
-            if (!xmlnsPairs[nsibind].isEmpty()) {
+            if (!(*xmlnsPairs)[nsibind].isEmpty()) {
                 std::cerr << "ERROR: Invalid input while processing start tag 8"<<std::endl;
                 delete e;
                 return nullptr;
             }
             
             
-            xmlnsPairs[nsibind] = uribind;
+            (*xmlnsPairs)[nsibind] = uribind;
         }
         
         e->definedNSIs = new std::deque<String>;
         assert(NSTable != nullptr);
-        for ( auto it = xmlnsPairs.begin(); it != xmlnsPairs.end(); ++it ) {
+        
+        //trying to make usage of xmlnsPairs more efficient
+        //order should not matter when looping through xmlnsPairs
+        //therefore, lets 
+        for ( auto it = xmlnsPairs->begin(); it != xmlnsPairs->end(); ++it ) {
             //std::cout<<"Adding Binding to NSTable: NSI=\'"<<it->first<<"\', URI=\'"<<it->second<<"\'\n";
             (*NSTable)[it->first].push(it->second);
             e->definedNSIs->push_front(it->first);
+            //it->second = String();
+            //(*xmlnsPairs)[it->first] = String();
         }
+        //cleanup xmlnsPairs
+        xmlnsPairs->clear();
 
         
         //we should now have processed our entire tag
@@ -380,6 +395,8 @@ namespace xml {
                 s->pop();
             }
         }
+        
+        //NSTable->clear();
     
         
         

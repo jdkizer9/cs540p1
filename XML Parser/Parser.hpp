@@ -91,6 +91,8 @@ namespace xml {
         //See sample usage of iteration at:
         //http://www.cplusplus.com/reference/unordered_map/unordered_map/begin/
         
+        std::unordered_map<const String, String, std::hash<std::string>> *xmlnsPairs;
+        
         const String beginCommentTag;
         const String endCommentTag;
         const String beginEndElementTag;
