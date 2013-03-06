@@ -24,6 +24,8 @@ namespace xml {
         
     public:
         
+        ~Parser();
+        
     private:
         
         Element *processStartTag(Input &);

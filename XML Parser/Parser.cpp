@@ -22,8 +22,15 @@ namespace xml {
     
     
     Parser::Parser() : foundRoot(false), root(nullptr) {
-        
+        //try handling allocate in the parser constructor
+        NSTable = new std::unordered_map<String, std::stack<String>, std::hash<std::string>, std::equal_to<std::string>  >;
     };
+    
+    Parser::~Parser() {
+        //try handling delete in the parser destructor
+        delete NSTable;
+        NSTable = nullptr;
+    }
     
     //need to be more robust,
     //confirm valid input and element and NSIs
@@ -328,10 +335,15 @@ namespace xml {
         }
         
         elementStack = new std::stack<Element *>;
-        NSTable = new std::unordered_map<String, std::stack<String>, std::hash<std::string>, std::equal_to<std::string>  >;
+        
+        //in theory, all stacks should be empty prior to parsing, and since
+        //all items pushed on the stack should also be popped off the stack
+        //moved to the constructor
+        //NSTable = new std::unordered_map<String, std::stack<String>, std::hash<std::string>, std::equal_to<std::string>  >;
         
     }
     
+    //could potentially add error flag to tell whether NSTable needed to be cleaned up
     void Parser::parser_cleanup() {
         
         
@@ -346,11 +358,30 @@ namespace xml {
             elementStack = nullptr;
         }
         
-        if (NSTable != nullptr)
-        {
-            delete NSTable;
-            NSTable = nullptr;
+        //we are spending a lot of time deleting the NStable
+        //We could try to loop through each element and pop everythign off the stack
+        //In theory, this could be more efficient than creating and destroying each time
+        //the parser runs. In normal cases, all stacks should be empty and require no
+        //popping.
+        
+        //moved delete to the destructor
+        //only handling popping of non-empty stacks here
+//        if (NSTable != nullptr)
+//        {
+//            delete NSTable;
+//            NSTable = nullptr;
+//        }
+        
+        //Clean up NSTable
+        
+        for ( auto it = NSTable->begin(); it != NSTable->end(); ++it ) {
+            std::stack<String> *s = &(it->second);
+            while (!s->empty()) {
+                s->pop();
+            }
         }
+    
+        
         
     }
 const Element *Parser::parse(const char *doc, size_t sz)
