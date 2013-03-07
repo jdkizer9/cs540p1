@@ -11,6 +11,7 @@
 #include <deque>
 #include <iostream>
 #include <assert.h>
+#include <stdlib.h> 
 
 namespace xml {
     
@@ -57,7 +58,8 @@ namespace xml {
         //b)Element name in the case of whitespace or '>'
         //c)invalid input in the case of anything else
         
-        tmpString = in.readUnitl(notAlphaNumOrUS);
+        //tmpString = in.readUnitl(notAlphaNumOrUS);
+        in.readUnitl(notAlphaNumOrUS, tmpString);
         //std::cout<<"Found tmpString="<<tmpString<<std::endl;
         //pk = in.peek();
         if ( in.peek() == ':') {
@@ -73,7 +75,7 @@ namespace xml {
         //if NSI was just found, get element name
         if ( in.peek() == ':') {
             in+=1;
-            tmpString = in.readUnitl(notAlphaNumOrUS);
+            in.readUnitl(notAlphaNumOrUS, tmpString);
             //pk = in.peek();
             if ( in.peek() == '>' || isspace(in.peek())){
                 e->eName = tmpString;
@@ -97,9 +99,12 @@ namespace xml {
         //moved to member variable
         //std::unordered_map<const String, String, std::hash<std::string>> xmlnsPairs;
         
+        String nsibind;
+        String uribind;
+        
         while (isspace(in.peek())) {
             //ignore all whitespace
-            in.readUnitl(notspace);
+            in.readUnitl(notspace, tmpString);
             
             //if '>' found, tag is over, break
             if (in.peek() == '>')
@@ -110,7 +115,7 @@ namespace xml {
             //otherwise, invalid input
             
             //if (in.find(0, xmlnsTag) != 0) {
-            if (in.find((int)in.get_pos(), "xmlns:") != 0) {
+            if (in.find(in.get_pos(), "xmlns:") != 0) {
                 std::cerr << "ERROR: Invalid input while processing start tag 3"<<std::endl;
                 delete e;
                 return nullptr;
@@ -118,9 +123,9 @@ namespace xml {
             
             //advance input position to eat xmlns
             in+=sizeof("xmlns:")-1;
-            tmpString = in.readUnitl(notAlphaNumOrUS);
-            String nsibind;
-            String uribind;
+            in.readUnitl(notAlphaNumOrUS, tmpString);
+            //String nsibind;
+            //String uribind;
             if ((!tmpString.isEmpty()) && ( in.get_char() == '=')) {
                 nsibind = tmpString;
             } else {
@@ -138,7 +143,7 @@ namespace xml {
             //check that the current char is ", then
             //check that the next char in the input stream
             //(need to iterate the pointer) is either '>' or space
-            tmpString = in.readUnitl('\"');
+            in.readUnitl('\"', tmpString);
             if ( (tmpString.isEmpty()) || (in.get_char() != '\"')) {
                 std::cerr << "ERROR: Invalid input while processing start tag 6"<<std::endl;
                 delete e;
@@ -154,7 +159,10 @@ namespace xml {
             }
             
             //this binding has already been defined, return an error
-            if (!(*xmlnsPairs)[nsibind].isEmpty()) {
+            //This check actually creates an Object String, just to be overwritten below
+            
+            //if (!(*xmlnsPairs)[nsibind].isEmpty()) {
+            if (xmlnsPairs->count(nsibind) != 0) {
                 std::cerr << "ERROR: Invalid input while processing start tag 8"<<std::endl;
                 delete e;
                 return nullptr;
@@ -169,36 +177,41 @@ namespace xml {
         
         //trying to make usage of xmlnsPairs more efficient
         //order should not matter when looping through xmlnsPairs
-        //therefore, lets 
+        //therefore, lets
+
         for ( auto it = xmlnsPairs->begin(); it != xmlnsPairs->end(); ++it ) {
-            //std::cout<<"Adding Binding to NSTable: NSI=\'"<<it->first<<"\', URI=\'"<<it->second<<"\'\n";
             (*NSTable)[it->first].push(it->second);
             e->definedNSIs->push_front(it->first);
-            //it->second = String();
-            //(*xmlnsPairs)[it->first] = String();
         }
-        //cleanup xmlnsPairs
         xmlnsPairs->clear();
-
         
         //we should now have processed our entire tag
-        pk = in.peek();
-        assert(pk == '>');
+        assert(in.peek() == '>');
         
         //we have added all the defined namespace bindings
         //now we finally have enough information to resolve our
         //current element's namespace, if a nsi was provided
         
+        
         if (!e->nsi.isEmpty()) {
             //if the NSI has not been bound to anything,
             //flag an error
-            if ((*NSTable)[e->nsi].empty()) {
+//            if ((*NSTable)[e->nsi].empty()) {
+//                std::cerr << "ERROR: Invalid input while processing start tag 8"<<std::endl;
+//                delete e;
+//                return nullptr;
+//            }
+//            //Otherwise, resolve the namespace
+//            e->URI = (*NSTable)[e->nsi].top();
+            
+            std::stack<String> &r_s = (*NSTable)[e->nsi];
+            if (r_s.empty()) {
                 std::cerr << "ERROR: Invalid input while processing start tag 8"<<std::endl;
                 delete e;
                 return nullptr;
             }
             //Otherwise, resolve the namespace
-            e->URI = (*NSTable)[e->nsi].top();
+            e->URI = r_s.top();
         }
         
         
@@ -253,7 +266,8 @@ namespace xml {
         //b)Element name in the case of whitespace or '>'
         //c)invalid input in the case of anything else
         
-        String tmpString = in.readUnitl(notAlphaNumOrUS);
+        String tmpString;
+        in.readUnitl(notAlphaNumOrUS, tmpString);
         //std::cout<<"Found tmpString="<<tmpString<<std::endl;
         //pk = in.peek();
         if ( in.peek() == ':') {
@@ -278,7 +292,7 @@ namespace xml {
         //if NSI was just found, get element name
         if ( in.peek() == ':') {
             in+=1;
-            tmpString = in.readUnitl(notAlphaNumOrUS);
+            in.readUnitl(notAlphaNumOrUS, tmpString);
             //pk = in.peek();
             
             if ( in.peek() == '>' || isspace(in.peek())){
@@ -296,7 +310,7 @@ namespace xml {
         assert(in.peek() == '>' || isspace(in.peek()));
         //in.PrintNext5Chars();
         //handle interpunct
-        in.readUnitl(notspace);
+        in.readUnitl(notspace, tmpString);
         //in.PrintNext5Chars();
         
         if (in.peek() != '>') {
@@ -314,8 +328,9 @@ namespace xml {
             for ( auto it = e->definedNSIs->begin(); it != e->definedNSIs->end(); ++it )
             {
                 //guarantee that this exists
-                assert(!(*NSTable)[*it].empty());
-                (*NSTable)[*it].pop();
+                std::stack<String> &r_s = (*NSTable)[*it];
+                assert(!(r_s.empty()));
+                r_s.pop();
             }
         }
         //this can be deleted now
@@ -388,13 +403,14 @@ namespace xml {
 //        }
         
         //Clean up NSTable
+        //All stacks in NSTable should be empty at this point
         
-        for ( auto it = NSTable->begin(); it != NSTable->end(); ++it ) {
-            std::stack<String> *s = &(it->second);
-            while (!s->empty()) {
-                s->pop();
-            }
-        }
+//        for ( auto it = NSTable->begin(); it != NSTable->end(); ++it ) {
+//            std::stack<String> &s = (it->second);
+//            while (!s.empty()) {
+//                s.pop();
+//            }
+//        }
         
         //NSTable->clear();
     
@@ -448,7 +464,8 @@ const Element *Parser::parse(const char *doc, size_t sz)
 //                    break;
 //                }
                 
-                in.readUnitl(notspace);
+                String tmpString;
+                in.readUnitl(notspace, tmpString);
                 
                 if ( (in.peek() == '<') && !foundRoot ) {
                     state = LEFT_ANGLE;
@@ -465,6 +482,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                         std::cerr<<"ERROR: Invalid input while looking for root element\n";
                     else
                         std::cerr<<"ERROR: Invalid input at end of stream\n";
+                    abort();
                     state = END;
                 }
                 
@@ -483,6 +501,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                     Element *newElement = processStartTag(in);
                     if (newElement == nullptr){
                         state = END;
+                        abort();
                         break;
                     }
                     
@@ -497,23 +516,27 @@ const Element *Parser::parse(const char *doc, size_t sz)
                     int err = processEndTag(in);
                     if (err != 0) {
                         state = END;
+                        abort();
                         break;                        
                     }
                     assert(in.peek() == '>');
                 } 
                 
                 //Comment
-                else if (in.find((int)in.get_pos(), "!--") == 0) {
+                else if (in.find(in.get_pos(), "!--") == 0) {
                     
                     if(elementStack->empty()) {
                         std::cerr << "ERROR: Found invalid comment after final element"<<std::endl;
+                        abort();
                         state = END;
                     }
                     
                     //std::cout<<"Processing Comment\n";
-                    String s = in.readUnitl("-->");
+                    String s;
+                    in.readUnitl("-->", s);
                     if (s.isEmpty()) {
                         std::cerr << "ERROR: Invalid input while processing comment"<<std::endl;
+                        abort();
                         state = END;
                     }
                     //the state below expects current character
@@ -524,6 +547,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 } else {
                     std::cerr << "ERROR: Invalid input while processing open angle bracket"<<std::endl;
                     state = END;
+                    abort();
                     break;
                 }
                 
@@ -542,6 +566,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 } else if (ch == '\0') {
                     std::cerr << "ERROR: Unexpected end of input"<<std::endl;
                     state = END;
+                    abort();
                 } else {
                     state = CONTENT;
                 }
@@ -570,13 +595,16 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 //in.PrintNext5Chars();
                 if(elementStack->empty()) {
                     std::cerr << "ERROR: The root end tag has already been processed"<<std::endl;
+                    abort();
                     state = END;
                 }
-                String textString = in.readUnitl('<');
+                String textString;
+                in.readUnitl('<', textString);
                 //in.PrintNext5Chars();
                 if (textString.isEmpty()) {
                     std::cerr << "ERROR: Invalid input while text"<<std::endl;
                     state = END;
+                    abort();
                     break;
                 }
                 //valid text
