@@ -15,7 +15,7 @@
 
 using namespace xml;
 
-Input::Input(const char *s, const size_t l) : String(s, (int)l), pos(0) {
+Input::Input(const char *s, const size_t l) : String(s, l), pos(0) {
     //std::cout << "Constructing Input" <<std::endl;
 }
 
@@ -49,9 +49,9 @@ const char * Input::get_abs_pos() const {
     return this->get_ptr()+pos;
 }
 
-int Input::left() const {
-    assert((size_t)get_len()>=pos);
-    return get_len()-(int)pos;
+size_t Input::left() const {
+    assert(get_len()>=pos);
+    return get_len()-pos;
 }
 
 Input &Input::operator+=(const size_t i) {
@@ -71,8 +71,8 @@ Input &Input::operator-=(const size_t i) {
 }
 
 
-String Input::readUnitl(char c) {
-    int offset = find((int)pos, c);
+void Input::readUnitl(char c, String &r_s) {
+    size_t offset = find(pos, c);
     //the expected character was not found,
     //set pos = len and return String to end
 //    if (offset == -1) {
@@ -86,34 +86,34 @@ String Input::readUnitl(char c) {
 //        return String(tmpPos, offset);
 //    }
     
-    return readUntilHelper(offset);
+    readUntilHelper(offset, r_s);
 }
 
-String Input::readUnitl(int(*fp)(int)) {
-    int offset = find((int)pos, fp);
+void Input::readUnitl(int(*fp)(int), String &r_s) {
+    size_t offset = find(pos, fp);
 //    const char *tmpPos = pos+this->get_ptr();
 //    pos += offset;
 //    return String(tmpPos, offset);
-    return readUntilHelper(offset);
+    readUntilHelper(offset, r_s);
 }
 
-String Input::readUnitl(const String &s) {
-    int offset = find((int)pos, s);
-    return readUntilHelper(offset);    
+void Input::readUnitl(const String &s, String &r_s) {
+    size_t offset = find(pos, s);
+    readUntilHelper(offset, r_s);
 }
 
-String Input::readUntilHelper(int offset) {
+void Input::readUntilHelper(size_t offset, String &r_s) {
     //the expected character was not found,
     //set pos = len and return String to end
-    if (offset < 0) {
+    if (offset == SIZE_T_MAX) {
         const char *tmpPos = this->get_len()+this->get_ptr();
         pos = (size_t)this->get_len();
         offset = 0;
-        return String(tmpPos, offset);
+        r_s.set(tmpPos, offset);
     } else {
         const char *tmpPos = pos+this->get_ptr();
         pos += (size_t)offset;
-        return String(tmpPos, offset);
+        r_s.set(tmpPos, offset);
     }
 }
 

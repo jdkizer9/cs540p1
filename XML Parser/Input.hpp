@@ -20,7 +20,7 @@ namespace xml {
         const char peek() const;
         size_t get_pos() const;
         const char * get_abs_pos() const;
-        int left() const;
+        size_t left() const;
         
         
         Input &operator+=(const size_t);
@@ -29,9 +29,9 @@ namespace xml {
         
         //simulates reading input until char found
         //returns characters in string
-        String readUnitl(char);
-        String readUnitl(int(*)(int));
-        String readUnitl(const String &s);
+        void readUnitl(char, String &);
+        void readUnitl(int(*)(int), String &);
+        void readUnitl(const String &, String &);
         
         void PrintNext5Chars();
         
@@ -43,7 +43,7 @@ namespace xml {
 //        int get_len() const;
         
     private:
-        String readUntilHelper(int);
+        void readUntilHelper(size_t, String &);
         size_t pos;
     };
     
