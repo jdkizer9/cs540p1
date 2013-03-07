@@ -11,16 +11,11 @@
 #include <iostream>
 #include <assert.h>
 
-//static int ctorCalls = 0;
-static int dtorCalls = 0;
 namespace xml {
 
     // Copy constructor.
-    //static int copyConstructorCalls=0;
     String::String(const String &s) : ptr(s.ptr), len(s.len) {
-        //std::cout << "Called the copy ctor" << std::endl;
-        //copyConstructorCalls++;
-        //ctorCalls++;
+
     }
     
     // Conversion to std::string.
@@ -28,38 +23,27 @@ namespace xml {
         return std::string(ptr, (size_t)len);
     }
     
-    //static int twoConstructorCalls=0;
-    String::String(const char *p, int l) : ptr(p), len(l) {
-        //std::cout << "Called the 2 param ctor" << std::endl;
-        //twoConstructorCalls++;
-        //ctorCalls++;
+    String::String(const char *p, size_t l) : ptr(p), len(l) {
+
     }
     
-    //static int oneConstructorCalls=0;
-    String::String(const char *p) : ptr(p), len((int)strlen(p)) {
-        //std::cout << "Called the 1 param ctor" << std::endl;
-        //oneConstructorCalls++;
-        //ctorCalls++;
+    String::String(const char *p) : ptr(p), len(strlen(p)) {
+
     }
     
-    //static int defConstructorCalls=0;
     String::String() : ptr(NULL), len(0) {
-        //std::cout << "Called the default ctor" << std::endl;
-        //defConstructorCalls++;
-        //ctorCalls++;
+
     }
     
     // Assignment.
     String &String::operator=(const String &s) {
-        //std::cout << "Called the assignment operator" << std::endl;
         ptr = s.ptr;
         len = s.len;
         return *this;
     }
     
-    String String::slice(int offset, int length) const {
-        assert(offset+length <= len);
-        if (length == -1)
+    String String::slice(size_t offset, size_t length) const {
+        if (length == SIZE_T_MAX)
             length = len - offset;
         return String(ptr+offset, length);
     }
@@ -84,57 +68,56 @@ namespace xml {
         return strncmp(s.ptr, ptr, (size_t)len);
     }
     
-    int String::find(int offset, const char c)  const {
-        //std::cout<<"Calling char version\n";
+    size_t String::find(size_t offset, const char c)  const {
         //boundary checking
         if (offset >= len) {
             assert(false);
-            return -2;
+            return SIZE_T_MAX;
         }
         
         //look for c
-        for (int i=offset; i<len; i++)
+        for (size_t i=offset; i<len; i++)
             if (ptr[i] == c)
                 return i-offset;
         
         //c not found
-        return -1;
+        return SIZE_T_MAX;
         
     }
     
-    int String::find(int offset, int(*fp)(int))  const {
+    size_t String::find(size_t offset, int(*fp)(int))  const {
         
         //boundary checking
         if (offset >= len) {
             //assert(false);
-            return -2;
+            return SIZE_T_MAX;
         }
         
         //look for matching character
-        for (int i=offset; i<len; i++)
+        for (size_t i=offset; i<len; i++)
             if (fp(ptr[i]))
                 return i-offset;
         
         //c not found
-        return -1;
+        return SIZE_T_MAX;
         
     }
     
-    int String::find(int offset, const String &s)  const {
-        //std::cout<<"Calling String Version\n";
+    size_t String::find(size_t offset, const String &s)  const {
+        
         //boundary checking
         if (offset+s.len >= len) {
             //assert(false);
-            return -2;
+            return SIZE_T_MAX;
         }
         
         //look for matching String
-        for (int i=offset; i+s.len<=len; i++)
+        for (size_t i=offset; i+s.len<=len; i++)
             if (strncmp(s.ptr, ptr+i, (size_t)s.len) == 0)
                 return i-offset;
         
         //c not found
-        return -1;
+        return SIZE_T_MAX;
         
     }
     
@@ -147,7 +130,7 @@ namespace xml {
         
         if (isEmpty())
             return false;
-        for (int i=0; i<len; i++) {
+        for (size_t i=0; i<len; i++) {
             if (!fp(ptr[i]))
                 return false;
         }
@@ -168,16 +151,20 @@ namespace xml {
         return ptr;
     }
     
-    int String::get_len() const {
+    size_t String::get_len() const {
         return len;
+    }
+    
+    void String::set(const char *p, size_t l) {
+        ptr = p;
+        len = l;
     }
     
     String::~String() {
 //        std::cout << "Destructing String: ";
 //        Print(std::cout);
 //        std::cout << std::endl;
-        len = 0;
-        dtorCalls++;
+        //len = 0;
     }
     
     

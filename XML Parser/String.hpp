@@ -25,11 +25,11 @@ namespace xml{
         //"Internal" Public Interface
     public:
         String();
-        String(const char *, int);
+        String(const char *, size_t);
         String(const char *);
         void Print(std::ostream &) const;
 
-        String slice(int, int) const;
+        String slice(size_t, size_t) const;
         
         //compares first len bytes
         int compare(const char *) const;
@@ -41,9 +41,9 @@ namespace xml{
         //to accept built-in search functions (e.g., isalpha)
         //return -1 in case of not being able to find it
         //return -2 in case where offset >= len
-        int find(int, char) const;
-        int find(int, int(*)(int)) const;
-        int find(int, const String &) const;
+        size_t find(size_t, char) const;
+        size_t find(size_t, int(*)(int)) const;
+        size_t find(size_t, const String &) const;
         
         //returns reference to a string from
         //offset to first instance of char
@@ -59,18 +59,19 @@ namespace xml{
         //index operator
         char operator[](size_t) const;
         
-        
+        void set(const char *, size_t);
         
         ~String();
         
     protected:
         //accessor
         const char *get_ptr() const;
-        int get_len() const;
+        size_t get_len() const;
+        
         
     private:
         const char *ptr;
-        int len;
+        size_t len;
     };
     
     
