@@ -17,7 +17,7 @@
 
 namespace xml {
     
-    Element::Element() : definedNSIs(nullptr), cSize(0), cMaxSize(8) {
+    Element::Element() : definedNSIs(nullptr), cSize(0), cMaxSize(2) {
         children = new const Node *[cMaxSize];
     }
     
@@ -41,9 +41,9 @@ namespace xml {
         delete[] children;
         
         //delete definedNSIs
-        //assert(definedNSIs != nullptr);
-        if (definedNSIs != nullptr)
-            delete definedNSIs;        
+        assert(definedNSIs == nullptr);
+//        if (definedNSIs != nullptr)
+//            delete definedNSIs;        
         
     }
     
@@ -135,8 +135,8 @@ namespace xml {
         std::cout << "NSI: " <<nsi<<std::endl;
         std::cout << "URI: " <<URI<<std::endl;
         std::cout << "Its NSI bindings are as follows:"<<std::endl;
-        for (std::deque<String>::iterator it = definedNSIs->begin(); it!=definedNSIs->end(); ++it)
-            std::cout << *it <<std::endl;
+//        for (std::deque<String>::iterator it = definedNSIs->begin(); it!=definedNSIs->end(); ++it)
+//            std::cout << *it <<std::endl;
     }
     
 }

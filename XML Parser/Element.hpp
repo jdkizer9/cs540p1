@@ -93,7 +93,7 @@ namespace xml{
         //This is dynamically created during processStartTag
         //this could technically be destroyed after END_TAG processing
         //std::deque<std::string> *definedNSIs;
-        std::deque<String> *definedNSIs;
+        std::vector<String> *definedNSIs;
         
         
         
