@@ -43,7 +43,7 @@ namespace xml {
     }
     
     String String::slice(size_t offset, size_t length) const {
-        if (length == SIZE_T_MAX)
+        if (length == SIZE_MAX)
             length = len - offset;
         return String(ptr+offset, length);
     }
@@ -72,7 +72,7 @@ namespace xml {
         //boundary checking
         if (offset >= len) {
             assert(false);
-            return SIZE_T_MAX;
+            return SIZE_MAX;
         }
         
         //look for c
@@ -81,7 +81,7 @@ namespace xml {
                 return i-offset;
         
         //c not found
-        return SIZE_T_MAX;
+        return SIZE_MAX;
         
     }
     
@@ -90,7 +90,7 @@ namespace xml {
         //boundary checking
         if (offset >= len) {
             //assert(false);
-            return SIZE_T_MAX;
+            return SIZE_MAX;
         }
         
         //look for matching character
@@ -99,7 +99,7 @@ namespace xml {
                 return i-offset;
         
         //c not found
-        return SIZE_T_MAX;
+        return SIZE_MAX;
         
     }
     
@@ -108,7 +108,7 @@ namespace xml {
         //boundary checking
         if (offset+s.len >= len) {
             //assert(false);
-            return SIZE_T_MAX;
+            return SIZE_MAX;
         }
         
         //look for matching String
@@ -117,7 +117,7 @@ namespace xml {
                 return i-offset;
         
         //c not found
-        return SIZE_T_MAX;
+        return SIZE_MAX;
         
     }
     
