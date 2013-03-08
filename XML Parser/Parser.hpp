@@ -14,6 +14,7 @@
 #include "Input.hpp"
 #include <stack>
 #include <unordered_map>
+#include <vector>
 #include <cstring> //Is this needed?
 
 namespace xml {
@@ -62,7 +63,7 @@ namespace xml {
         
         //the element stack and the NSTable can be created dynamically when
         //beginning the parser, and deleted upon exiting
-        std::stack<Element *> *elementStack;
+        std::stack<Element *, std::vector<Element *>> *elementStack;
         bool foundRoot;
         Element *root;
         
@@ -78,7 +79,8 @@ namespace xml {
         //std::unordered_map<const String, std::stack<const String>, const StringHashFunction, const StringEqual> *NSTable;
         
         //Could turn this into a class
-        std::unordered_map<String, std::stack<String>, std::hash<std::string>, std::equal_to<std::string> > *NSTable;
+        //std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string>, std::equal_to<std::string> > *NSTable;
+        std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string> > *NSTable;
         
         //associative array of xmlns pairs
         //technically, only a list of NSIs is necessary to live in the element

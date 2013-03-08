@@ -24,7 +24,8 @@ namespace xml {
     
     Parser::Parser() : foundRoot(false), root(nullptr) {
         //try handling allocate in the parser constructor
-        NSTable = new std::unordered_map<String, std::stack<String>, std::hash<std::string>, std::equal_to<std::string>  >;
+        //NSTable = new std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string>, std::equal_to<std::string>  >;
+        NSTable = new std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string> >;
         
         xmlnsPairs = new std::unordered_map<const String, String, std::hash<std::string>>;
     };
@@ -168,22 +169,28 @@ namespace xml {
                 return nullptr;
             }
             
-            
             (*xmlnsPairs)[nsibind] = uribind;
         }
         
-        e->definedNSIs = new std::deque<String>;
-        assert(NSTable != nullptr);
-        
-        //trying to make usage of xmlnsPairs more efficient
-        //order should not matter when looping through xmlnsPairs
-        //therefore, lets
-
-        for ( auto it = xmlnsPairs->begin(); it != xmlnsPairs->end(); ++it ) {
-            (*NSTable)[it->first].push(it->second);
-            e->definedNSIs->push_front(it->first);
+        //only need to do this processing if binding pairs were included
+        if (!xmlnsPairs->empty()) {
+            
+            e->definedNSIs = new std::vector<String>;
+            assert(NSTable != nullptr);
+            
+            //trying to make usage of xmlnsPairs more efficient
+            //order should not matter when looping through xmlnsPairs
+            //therefore, lets
+            
+            for ( auto it = xmlnsPairs->begin(); it != xmlnsPairs->end(); ++it ) {
+                (*NSTable)[it->first].push(it->second);
+                e->definedNSIs->push_back(it->first);
+            }
+            xmlnsPairs->clear();
+            
+            //if xmlnsPairs was not empty above, then e->definedNSIs must not be empty now
+            assert(!e->definedNSIs->empty());
         }
-        xmlnsPairs->clear();
         
         //we should now have processed our entire tag
         assert(in.peek() == '>');
@@ -204,7 +211,7 @@ namespace xml {
 //            //Otherwise, resolve the namespace
 //            e->URI = (*NSTable)[e->nsi].top();
             
-            std::stack<String> &r_s = (*NSTable)[e->nsi];
+            std::stack<String, std::vector<String>> &r_s = (*NSTable)[e->nsi];
             if (r_s.empty()) {
                 std::cerr << "ERROR: Invalid input while processing start tag 8"<<std::endl;
                 delete e;
@@ -321,21 +328,23 @@ namespace xml {
         //we are now assured that we have valid input.
         //cleanup element
         //1) for each item in definedNSIs, pop the stack for the NSI
-        //   in NSTable
+        //   in NSTable. if definedNSIs, it is not empty
         //2) pop the element off the element stack
         
-        if (!e->definedNSIs->empty()) {
+        if (e->definedNSIs != nullptr) {
             for ( auto it = e->definedNSIs->begin(); it != e->definedNSIs->end(); ++it )
             {
                 //guarantee that this exists
-                std::stack<String> &r_s = (*NSTable)[*it];
+                std::stack<String, std::vector<String>> &r_s = (*NSTable)[*it];
                 assert(!(r_s.empty()));
                 r_s.pop();
             }
-        }
+        
         //this can be deleted now
         delete e->definedNSIs;
         e->definedNSIs = nullptr;
+        
+        }
         assert( (elementStack->size()==1)?(elementStack->top() == root):(elementStack->size()>1));
         
         //std::cout<<"Removing Element "<< elementStack->top()->nmspace() << ":" << elementStack->top()->name() << std::endl;
@@ -364,7 +373,7 @@ namespace xml {
             root = nullptr;
         }
         
-        elementStack = new std::stack<Element *>;
+        elementStack = new std::stack<Element *, std::vector<Element *>>;
         
         //in theory, all stacks should be empty prior to parsing, and since
         //all items pushed on the stack should also be popped off the stack
