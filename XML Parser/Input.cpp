@@ -13,6 +13,7 @@
 #include <iostream>
 #include <assert.h>
 
+
 using namespace xml;
 
 Input::Input(const char *s, const size_t l) : String(s, l), pos(0) {
@@ -105,7 +106,7 @@ void Input::readUnitl(const String &s, String &r_s) {
 void Input::readUntilHelper(size_t offset, String &r_s) {
     //the expected character was not found,
     //set pos = len and return String to end
-    if (offset == SIZE_T_MAX) {
+    if (offset == SIZE_MAX) {
         const char *tmpPos = this->get_len()+this->get_ptr();
         pos = (size_t)this->get_len();
         offset = 0;
