@@ -384,6 +384,18 @@ namespace xml {
         //moved to the constructor
         //NSTable = new std::unordered_map<String, std::stack<String>, std::hash<std::string>, std::equal_to<std::string>  >;
         
+        
+        //std::cout<<"The table contains "<<NSTable->size()<<" elements."<<std::endl;
+        //std::cout<<"Its load factor is "<<NSTable->load_factor()<<std::endl;
+        //std::cout<<"Its max load factor is "<<NSTable->max_load_factor()<<std::endl;
+        if (8*NSTable->load_factor() > NSTable->max_load_factor())
+        {
+            NSTable->reserve(NSTable->size()*8);
+            //std::cout<<"After reserving "<<std::endl;
+            //std::cout<<"Its load factor is "<<NSTable->load_factor()<<std::endl;
+            //std::cout<<"Its max load factor is "<<NSTable->max_load_factor()<<std::endl;
+        }
+        
     }
     
     //could potentially add error flag to tell whether NSTable needed to be cleaned up
