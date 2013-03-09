@@ -109,8 +109,15 @@ namespace xml {
             return isalnum(c);
     }
     
+//    inline int notAlphaNumOrUS(int c) {
+//        return !isAlphaNumOrUS(c);
+//    }
+    
     inline int notAlphaNumOrUS(int c) {
-        return !isAlphaNumOrUS(c);
+        if(c == '_')
+            return 0;
+        else
+            return isalnum(c)==0;
     }
     
     inline int notspace(int c) {

@@ -151,7 +151,8 @@ namespace xml {
                 return nullptr;
             }
             pk = in.peek();
-            if ( in.peek() == '>' || isspace(in.peek())) {
+            //if ( in.peek() == '>' || isspace(in.peek())) {
+            if ( pk == '>' || isspace(pk)) {
                 uribind = tmpString;
             } else {
                 std::cerr << "ERROR: Invalid input while processing start tag 7"<<std::endl;
@@ -445,7 +446,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
     
     parser_init();
     
-    ch = in.peek();
+    //ch = in.peek();
     
     while (state != END)
     {
