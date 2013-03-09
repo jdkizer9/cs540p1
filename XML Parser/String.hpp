@@ -55,12 +55,21 @@ namespace xml{
         //ensures that every char is valid according to input function
         bool isValid(int(*)(int)) const;
         
+        size_t hash1() const;
+        size_t hash2() const;
+        size_t hash3() const;
+        
         
         //index operator
         inline char operator[](size_t i) const {
             return at(i);
         }
         
+        inline size_t get_len() const {
+            return len;
+        };
+        
+        bool lessThan(const String &) const;
         
         
         inline void set(const char *p, size_t l) {
@@ -75,9 +84,6 @@ namespace xml{
         inline const char *get_ptr() const {
             return ptr;
         };
-        inline size_t get_len() const {
-            return len;
-        };
         
         inline char at(size_t i) const {
             
@@ -87,7 +93,6 @@ namespace xml{
                 return ptr[i];
             }
         }
-        
         
     private:
         const char *ptr;
@@ -112,13 +117,15 @@ bool operator!=(const String &, const char *);
 bool operator==(const String &, const String &);
 bool operator!=(const String &, const String &);
     
+bool operator<(const String &, const String &);
+    
 // Output operator
 std::ostream &operator<<(std::ostream &, const String &);
     
     
 class StringHashFunction {
 public:
-    ::std::size_t operator ()(const String &s) const;
+    inline std::size_t operator ()(const String &s) const {return s.hash3();};
 };
 class StringEqual {
 public:

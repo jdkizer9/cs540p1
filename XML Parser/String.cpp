@@ -135,7 +135,50 @@ namespace xml {
             if (!fp(ptr[i]))
                 return false;
         }
+        
         return true;
+    }
+    
+    
+    //using string hash function found on the internet
+    //Credit to poster George V. Reilly at
+    //http://stackoverflow.com/questions/98153/whats-the-best-hashing-algorithm-to-use-on-a-stl-string-when-using-hash-map
+        
+    size_t String::hash1() const {
+        size_t h=0;
+        for (size_t i=0;i<len;i++)
+        {
+            h = h * 101 + (size_t)ptr[i];
+        }
+        return h;
+    }
+    
+    size_t String::hash2() const {
+        std::hash<std::string> str_hash;
+        
+        return str_hash(*this);
+    }
+    
+    /* magic numbers from http://www.isthe.com/chongo/tech/comp/fnv/ */
+    static const size_t InitialFNV = 2166136261U;
+    static const size_t FNVMultiple = 16777619;
+    
+    /* Fowler / Noll / Vo (FNV) Hash */
+    size_t String::hash3() const
+    //size_t myhash(const string &s)
+    {
+        size_t h = InitialFNV;
+        for(size_t i = 0; i < len; i++)
+        {
+            h = h ^ ((size_t)ptr[i]);       /* xor  the low 8 bits */
+            h = h * FNVMultiple;  /* multiply by the magic number */
+        }
+        return h;
+    }
+    
+    
+    bool String::lessThan(const String &s2) const {
+        return (memcmp(this->ptr, s2.ptr, ( (this->len < s2.len)?s2.len:this->len ) ) < 0);
     }
     
 //    char String::operator[](size_t i) const {
@@ -211,6 +254,10 @@ namespace xml {
         return !(s1 == s2);
     }
     
+    bool operator<(const String &s1, const String &s2) {
+        return s1.lessThan(s2);
+    }
+    
     //This could probably be more efficient. Uses conversion from String to string.
     //However, this gets around forcing this to be a friend function for local access.
     //Could use a public Print member function that returns an ostream
@@ -220,10 +267,12 @@ namespace xml {
         return out;
     }
     
-    ::std::size_t StringHashFunction::operator ()(const String &s) const {
-        std::hash<std::string> str_hash;
-        return str_hash(s);
-    }
+    
+    
+    
+//    std::size_t StringHashFunction::operator ()(const String &s) const {
+//        return s.hash1();
+//    }
     
     bool StringEqual::operator ()(const String &a, const String &b) const {
         return a == b;
