@@ -17,7 +17,7 @@
 
 namespace xml {
     
-    Element::Element() : definedNSIs(nullptr), cSize(0), cMaxSize(2) {
+    Element::Element() : definedNSIs(nullptr), cSize(0), cMaxSize(4) {
         children = new const Node *[cMaxSize];
     }
     
