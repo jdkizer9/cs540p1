@@ -61,11 +61,12 @@ namespace xml {
     int String::compare(const char *cStr) const {
         return strncmp(cStr, ptr, (size_t)len);
     }
-    
+     
     int String::compare(const String &s) const {
         if (s.len != len)
             return -1;
-        return strncmp(s.ptr, ptr, (size_t)len);
+        //return strncmp(s.ptr, ptr, (size_t)len);
+        return memcmp(s.ptr, ptr, (size_t)len);
     }
     
     size_t String::find(size_t offset, const char c)  const {
@@ -121,9 +122,9 @@ namespace xml {
         
     }
     
-    bool String::isEmpty() const {
-        return (len == 0);
-    }
+//    bool String::isEmpty() const {
+//        return (len == 0);
+//    }
     
     //check for String validity
     bool String::isValid(int (*fp)(int)) const {
@@ -137,28 +138,28 @@ namespace xml {
         return true;
     }
     
-    char String::operator[](size_t i) const {
-        
-        if (i >= (size_t)len) {
-            return '\0';
-        } else {
-            return ptr[i];
-        }
-    }
+//    char String::operator[](size_t i) const {
+//        
+//        if (i >= (size_t)len) {
+//            return '\0';
+//        } else {
+//            return ptr[i];
+//        }
+//    }
 
-    const char *String::get_ptr() const {
-        
-        return ptr;
-    }
+//    const char *String::get_ptr() const {
+//        
+//        return ptr;
+//    }
+//    
+//    size_t String::get_len() const {
+//        return len;
+//    }
     
-    size_t String::get_len() const {
-        return len;
-    }
-    
-    void String::set(const char *p, size_t l) {
-        ptr = p;
-        len = l;
-    }
+//    void String::set(const char *p, size_t l) {
+//        ptr = p;
+//        len = l;
+//    }
     
     String::~String() {
 //        std::cout << "Destructing String: ";

@@ -50,23 +50,43 @@ namespace xml{
         //String &readUntil(int, char) const;
         
         //provide String validity checks
-        bool isEmpty() const;
+        inline bool isEmpty() const {return (len == 0); };
         
         //ensures that every char is valid according to input function
         bool isValid(int(*)(int)) const;
         
         
         //index operator
-        char operator[](size_t) const;
+        inline char operator[](size_t i) const {
+            return at(i);
+        }
         
-        void set(const char *, size_t);
+        
+        
+        inline void set(const char *p, size_t l) {
+            ptr = p;
+            len = l;
+        };
         
         ~String();
         
     protected:
         //accessor
-        const char *get_ptr() const;
-        size_t get_len() const;
+        inline const char *get_ptr() const {
+            return ptr;
+        };
+        inline size_t get_len() const {
+            return len;
+        };
+        
+        inline char at(size_t i) const {
+            
+            if (i >= (size_t)len) {
+                return '\0';
+            } else {
+                return ptr[i];
+            }
+        }
         
         
     private:
