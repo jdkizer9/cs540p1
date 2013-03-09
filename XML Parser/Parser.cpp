@@ -25,9 +25,12 @@ namespace xml {
     Parser::Parser() : foundRoot(false), root(nullptr) {
         //try handling allocate in the parser constructor
         //NSTable = new std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string>, std::equal_to<std::string>  >;
-        NSTable = new std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string> >;
+        //NSTable = new std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string> >;
+        NSTable = new std::unordered_map<String, std::stack<String, std::vector<String>>, const StringHashFunction >;
+        //NSTable = new std::map<String, std::stack<String, std::vector<String>> >;
         
-        xmlnsPairs = new std::unordered_map<const String, String, std::hash<std::string>>;
+        //xmlnsPairs = new std::unordered_map<const String, String, std::hash<std::string>>;
+        xmlnsPairs = new std::unordered_map<const String, String, const StringHashFunction>;
     };
     
     Parser::~Parser() {

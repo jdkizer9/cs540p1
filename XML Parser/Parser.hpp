@@ -14,6 +14,7 @@
 #include "Input.hpp"
 #include <stack>
 #include <unordered_map>
+#include <map>
 #include <vector>
 #include <cstring> //Is this needed?
 
@@ -80,7 +81,9 @@ namespace xml {
         
         //Could turn this into a class
         //std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string>, std::equal_to<std::string> > *NSTable;
-        std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string> > *NSTable;
+        //std::unordered_map<String, std::stack<String, std::vector<String>>, std::hash<std::string> > *NSTable;
+        std::unordered_map<String, std::stack<String, std::vector<String>>, const StringHashFunction > *NSTable;
+        //std::map<String, std::stack<String, std::vector<String>> > *NSTable;
         
         //associative array of xmlns pairs
         //technically, only a list of NSIs is necessary to live in the element
@@ -93,7 +96,8 @@ namespace xml {
         //See sample usage of iteration at:
         //http://www.cplusplus.com/reference/unordered_map/unordered_map/begin/
         
-        std::unordered_map<const String, String, std::hash<std::string>> *xmlnsPairs;
+        //std::unordered_map<const String, String, std::hash<std::string>> *xmlnsPairs;
+        std::unordered_map<const String, String, const StringHashFunction> *xmlnsPairs;
         
         const String beginCommentTag;
         const String endCommentTag;
