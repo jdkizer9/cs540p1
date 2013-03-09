@@ -36,15 +36,15 @@ Input::get_char() {
     return c;
 }
 
-const char Input::peek() const {
-    assert(pos <= (size_t)get_len());
-    return this->get_ptr()[pos];
-}
+//const char Input::peek() const {
+//    assert(pos <= (size_t)get_len());
+//    return this->get_ptr()[pos];
+//}
 
-size_t
-Input::get_pos() const {
-    return pos;
-}
+//size_t
+//Input::get_pos() const {
+//    return pos;
+//}
 
 const char * Input::get_abs_pos() const {
     return this->get_ptr()+pos;

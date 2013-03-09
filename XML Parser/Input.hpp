@@ -11,14 +11,18 @@
 
 #include "String.hpp"
 #include <cstring>
+#include <assert.h>
 
 namespace xml {
     class Input : public String {
     public:
         Input(const char *, const size_t);
         char get_char();
-        const char peek() const;
-        size_t get_pos() const;
+        inline const char peek() const {
+            assert(pos <= (size_t)get_len());
+            return this->get_ptr()[pos];
+        };
+        inline size_t get_pos() const {return pos;};
         const char * get_abs_pos() const;
         size_t left() const;
         
