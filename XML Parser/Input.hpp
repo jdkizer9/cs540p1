@@ -17,7 +17,14 @@ namespace xml {
     class Input : public String {
     public:
         Input(const char *, const size_t);
-        char get_char();
+        char get_char() {
+            char c = at(pos);
+            
+            if (c != '\0')
+                pos++;
+            
+            return c;
+        };
         inline const char peek() const {
             assert(pos <= (size_t)get_len());
             return this->get_ptr()[pos];

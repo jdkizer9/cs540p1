@@ -25,16 +25,16 @@ Input::Input(const char *s, const size_t l) : String(s, l), pos(0) {
 //check for NULL character ('\0') and throw exception if one occurs
 //that way '\0' can be returned from this function to denote
 //that the input has completed
-char
-Input::get_char() {
-    
-    char c = this->get_ptr()[pos];
-
-    if (c != '\0')
-        pos++;
-    
-    return c;
-}
+//char
+//Input::get_char() {
+//    
+//    char c = at(pos);
+//
+//    if (c != '\0')
+//        pos++;
+//    
+//    return c;
+//}
 
 //const char Input::peek() const {
 //    assert(pos <= (size_t)get_len());
