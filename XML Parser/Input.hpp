@@ -2,8 +2,6 @@
 //  Input.hpp
 //  XML Parser
 //
-//  Created by James Kizer on 2/19/13.
-//  Copyright (c) 2013 James Kizer. All rights reserved.
 //
 
 #ifndef __XML_Parser__Input__
@@ -26,7 +24,7 @@ namespace xml {
             return c;
         };
         inline const char peek() const {
-            assert(pos <= (size_t)get_len());
+            //assert(pos <= (size_t)get_len());
             return this->get_ptr()[pos];
         };
         inline size_t get_pos() const {return pos;};

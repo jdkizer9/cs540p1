@@ -2,8 +2,6 @@
 //  Pool.cpp
 //  XML Parser
 //
-//  Created by James Kizer on 3/9/13.
-//  Copyright (c) 2013 James Kizer. All rights reserved.
 //
 
 #include "Pool.hpp"
@@ -23,9 +21,9 @@ namespace xml {
             void *p = head;
             head = head->next;
             free(p);
-            count--;
+            //count--;
         }
-        assert(count == 0);
+        //assert(count == 0);
     }
     
     void *Pool::allocate() {
@@ -33,13 +31,13 @@ namespace xml {
         //return malloc(typeSize);
         if (head == nullptr)
         {
-            assert (count == 0);
+            //assert (count == 0);
             return malloc(typeSize);
         } else {
-            assert (count > 0);
+            //assert (count > 0);
             void *p = head;
             head = head->next;
-            count--;
+            //count--;
             return p;
         }
         
@@ -52,7 +50,7 @@ namespace xml {
         Object *o = (Object *)p;
         o->next = head;
         head = o;
-        count++;
+        //count++;
         
     }
 

@@ -2,8 +2,6 @@
 //  Element.cpp
 //  XML Parser
 //
-//  Created by James Kizer on 2/18/13.
-//  Copyright (c) 2013 James Kizer. All rights reserved.
 //
 
 #include "Element.hpp"
@@ -23,6 +21,7 @@ namespace xml {
     
     Element::Element() : definedNSIs(nullptr), cSize(0), cMaxSize(4) {
         children = new const Node *[cMaxSize];
+        //children = nullptr;
     }
     
     Element::~Element() {
@@ -42,10 +41,13 @@ namespace xml {
             delete child;
         }
         
+//        if (children != nullptr)
+//            delete[] children;
+        
         delete[] children;
         
         //delete definedNSIs
-        assert(definedNSIs == nullptr);
+        //assert(definedNSIs == nullptr);
 //        if (definedNSIs != nullptr)
 //            delete definedNSIs;        
         
@@ -54,6 +56,8 @@ namespace xml {
     void Element::addChild(const Node *node) {
         //children.push_back(node);
         
+//        if (children == nullptr)
+//            children = new const Node *[cMaxSize];
         //if array is full, double size and copy existing elements
         //to new array
         if (cSize == cMaxSize) {
@@ -107,7 +111,7 @@ namespace xml {
     }
     
     const Element *Element::to_Element(const Node *n) {
-        assert(typeid(*n) == typeid(Element));
+        //assert(typeid(*n) == typeid(Element));
         return (Element*)n;
     }
     
@@ -122,11 +126,11 @@ namespace xml {
     }
     
     
-    void *Element::operator new(size_t size)
+    void *Element::operator new(size_t)
     {
         void *p;
         //std::cout << "In overloaded new.";
-        assert( elementPool.checkSize(size));
+        //assert( elementPool.checkSize(size));
         p =  elementPool.allocate();
         //p =  malloc(size);
         if(!p)

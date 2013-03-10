@@ -2,8 +2,6 @@
 //  String.cpp
 //  XML Parser
 //
-//  Created by James Kizer on 2/18/13.
-//  Copyright (c) 2013 James Kizer. All rights reserved.
 //
 
 #include "String.hpp"
@@ -75,7 +73,7 @@ namespace xml {
     size_t String::find(size_t offset, const char c)  const {
         //boundary checking
         if (offset >= len) {
-            assert(false);
+            //assert(false);
             return SIZE_MAX;
         }
         
@@ -142,11 +140,11 @@ namespace xml {
         return true;
     }
     
-    void *String::operator new(size_t size)
+    void *String::operator new(size_t)
     {
         void *p;
         //std::cout << "In overloaded new.";
-        assert( stringPool.checkSize(size));
+        //assert( stringPool.checkSize(size));
         p =  stringPool.allocate();
         //p =  malloc(size);
         if(!p)

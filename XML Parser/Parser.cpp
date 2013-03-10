@@ -2,8 +2,6 @@
 //  Parser.cpp
 //  XML Parser
 //
-//  Created by James Kizer on 2/18/13.
-//  Copyright (c) 2013 James Kizer. All rights reserved.
 //
 
 #include "Parser.hpp"
@@ -197,7 +195,7 @@ namespace xml {
         }
         
         //we should now have processed our entire tag
-        assert(in.peek() == '>');
+        //assert(in.peek() == '>');
         
         //we have added all the defined namespace bindings
         //now we finally have enough information to resolve our
@@ -231,17 +229,17 @@ namespace xml {
         //If we have not found the root element, we must have just processed it
         if (!foundRoot) {
             //do some assertions
-            assert(root == nullptr);
-            assert(elementStack != nullptr);
-            assert(elementStack->empty() == true);
+            //assert(root == nullptr);
+            //assert(elementStack != nullptr);
+            //assert(elementStack->empty() == true);
             foundRoot = true;
             root = e;
         } else {
             //Not the root element, the element at the top of the
             //element stack is the parent, add there
             //do some assertions
-            assert(root != nullptr);
-            assert(elementStack->empty() != true);
+            //assert(root != nullptr);
+            //assert(elementStack->empty() != true);
             Element *parent = elementStack->top();
             parent->addChild(e);
         }
@@ -255,7 +253,7 @@ namespace xml {
     int Parser::processEndTag(Input &in)
     {
         
-        assert(in.peek() == '/');
+        //assert(in.peek() == '/');
         //should now be pointing to the first char of the
         //elem name / NSI
         in+=1;
@@ -318,7 +316,7 @@ namespace xml {
         }
         //based on control flow, the current char should be either
         // '>' or space
-        assert(in.peek() == '>' || isspace(in.peek()));
+        //assert(in.peek() == '>' || isspace(in.peek()));
         //in.PrintNext5Chars();
         //handle interpunct
         in.readUnitl(notspace, tmpString);
@@ -340,7 +338,7 @@ namespace xml {
             {
                 //guarantee that this exists
                 std::stack<String, std::vector<String>> &r_s = (*NSTable)[*it];
-                assert(!(r_s.empty()));
+                //assert(!(r_s.empty()));
                 r_s.pop();
             }
         
@@ -349,7 +347,7 @@ namespace xml {
         e->definedNSIs = nullptr;
         
         }
-        assert( (elementStack->size()==1)?(elementStack->top() == root):(elementStack->size()>1));
+        //assert( (elementStack->size()==1)?(elementStack->top() == root):(elementStack->size()>1));
         
         //std::cout<<"Removing Element "<< elementStack->top()->nmspace() << ":" << elementStack->top()->name() << std::endl;
         
@@ -358,7 +356,7 @@ namespace xml {
         
         
         //input stream in a known state
-        assert(in.peek() == '>');
+        //assert(in.peek() == '>');
         return 0;
     }
     
@@ -517,7 +515,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
             case LEFT_ANGLE:
             {
                 
-                assert(in.peek() == '<');
+                //assert(in.peek() == '<');
                 in+=1;
                 //new element start tag
                 //in.PrintNext5Chars();
@@ -530,8 +528,8 @@ const Element *Parser::parse(const char *doc, size_t sz)
                         break;
                     }
                     
-                    assert(newElement == elementStack->top());
-                    assert(in.peek() == '>');
+                    //assert(newElement == elementStack->top());
+                    //assert(in.peek() == '>');
                     
                     //std::cout<<"Added Element "<< newElement->nmspace() << ":" << newElement->name() << std::endl;
                 }
@@ -544,7 +542,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                         abort();
                         break;                        
                     }
-                    assert(in.peek() == '>');
+                    //assert(in.peek() == '>');
                 } 
                 
                 //Comment
@@ -567,7 +565,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                     //the state below expects current character
                     //to be '>'
                     in+=2;
-                    assert(in.peek() == '>');
+                    //assert(in.peek() == '>');
                     //in.PrintNext5Chars();
                 } else {
                     std::cerr << "ERROR: Invalid input while processing open angle bracket"<<std::endl;
@@ -577,7 +575,7 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 }
                 
                 
-                assert(in.peek() == '>');
+                //assert(in.peek() == '>');
                 //after processing either start tag, end tag, or
                 //comment, determine which state to transition to
                 in+=1;
@@ -636,12 +634,12 @@ const Element *Parser::parse(const char *doc, size_t sz)
                 //create new node and add it to the element at the
                 //top of the element stack
                 Text *t = new Text(textString);
-                assert(!elementStack->empty());
+                //assert(!elementStack->empty());
                 Element *e = elementStack->top();
                 e->addChild(t);
                 
                 //std::cout<<"Added Content \""<<textString<<"\""<<std::endl;
-                assert(in.peek() == '<');
+                //assert(in.peek() == '<');
                 state = LEFT_ANGLE;
                 
             }
@@ -654,7 +652,10 @@ const Element *Parser::parse(const char *doc, size_t sz)
 //                break;
 //                
             default:
-                assert(false);
+                //assert(false);
+                std::cerr << "ERROR: Invalid input"<<std::endl;
+                abort();
+
         }
         
     }

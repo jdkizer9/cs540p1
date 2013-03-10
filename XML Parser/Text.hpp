@@ -2,8 +2,6 @@
 //  Text.hpp
 //  XML Parser
 //
-//  Created by James Kizer on 2/18/13.
-//  Copyright (c) 2013 James Kizer. All rights reserved.
 //
 
 #ifndef __XML_Parser__Text__

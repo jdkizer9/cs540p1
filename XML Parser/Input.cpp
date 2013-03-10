@@ -2,8 +2,6 @@
 //  Input.cpp
 //  XML Parser
 //
-//  Created by James Kizer on 2/19/13.
-//  Copyright (c) 2013 James Kizer. All rights reserved.
 //
 
 #include "Input.hpp"
@@ -51,7 +49,7 @@ const char * Input::get_abs_pos() const {
 }
 
 size_t Input::left() const {
-    assert(get_len()>=pos);
+    //assert(get_len()>=pos);
     return get_len()-pos;
 }
 
@@ -63,7 +61,7 @@ Input &Input::operator+=(const size_t i) {
 }
 
 Input &Input::operator-=(const size_t i) {
-    assert(i>pos);
+    //assert(i>pos);
     if (i >= pos)
         pos = 0;
     else

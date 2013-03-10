@@ -2,8 +2,6 @@
 //  Text.cpp
 //  XML Parser
 //
-//  Created by James Kizer on 2/18/13.
-//  Copyright (c) 2013 James Kizer. All rights reserved.
 //
 
 #include "Text.hpp"
@@ -29,7 +27,7 @@ namespace xml {
     }
     
     const Text *Text::to_Text(const Node *n) {
-        assert(typeid(*n) == typeid(Text));
+        //assert(typeid(*n) == typeid(Text));
         return (Text*)n;
     }
     

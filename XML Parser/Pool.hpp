@@ -1,9 +1,9 @@
 //
-//  Pool.h
+//  Pool.hpp
 //  XML Parser
 //
-//  Created by James Kizer on 3/9/13.
-//  Copyright (c) 2013 James Kizer. All rights reserved.
+//  Concepts based on Prof. Kenneth Chiu's Allocator template
+//  
 //
 
 #ifndef __XML_Parser__Pool__
