@@ -7,11 +7,14 @@
 //
 
 #include "String.hpp"
+#include "Pool.hpp"
 #include <string.h>
 #include <iostream>
 #include <assert.h>
 
 namespace xml {
+    
+    static Pool stringPool(sizeof(String));
 
     // Copy constructor.
     String::String(const String &s) : ptr(s.ptr), len(s.len) {
@@ -137,6 +140,27 @@ namespace xml {
         }
         
         return true;
+    }
+    
+    void *String::operator new(size_t size)
+    {
+        void *p;
+        //std::cout << "In overloaded new.";
+        assert( stringPool.checkSize(size));
+        p =  stringPool.allocate();
+        //p =  malloc(size);
+        if(!p)
+        {
+            throw std::bad_alloc();  //Throw directly than with named temp variable
+        }
+        return p;
+    }
+    
+    void String::operator delete(void *p)
+    {
+        //std::cout << "In overloaded delete.\n";
+        stringPool.deallocate(p);
+        //free(p);
     }
     
     

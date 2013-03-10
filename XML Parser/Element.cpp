@@ -10,12 +10,16 @@
 #include "Visitor.hpp"
 #include "Node.hpp"
 #include "Text.hpp"
+#include "Pool.hpp"
 #include <iostream>
 #include <typeindex>
 #include <typeinfo>
 #include <assert.h>
+#include <new>
 
 namespace xml {
+    
+    static Pool elementPool(sizeof(Element));
     
     Element::Element() : definedNSIs(nullptr), cSize(0), cMaxSize(4) {
         children = new const Node *[cMaxSize];
@@ -115,6 +119,28 @@ namespace xml {
             child(i)->handleVisitor(v);
         
         v->end_element_visit(*this);      
+    }
+    
+    
+    void *Element::operator new(size_t size)
+    {
+        void *p;
+        //std::cout << "In overloaded new.";
+        assert( elementPool.checkSize(size));
+        p =  elementPool.allocate();
+        //p =  malloc(size);
+        if(!p)
+        {
+            throw std::bad_alloc();  //Throw directly than with named temp variable
+        }
+        return p;
+    }
+    
+    void Element::operator delete(void *p)
+    {
+        //std::cout << "In overloaded delete.\n";
+        elementPool.deallocate(p);
+        //free(p);
     }
     
     

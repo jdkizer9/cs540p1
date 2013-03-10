@@ -77,6 +77,10 @@ namespace xml{
             len = l;
         };
         
+        //overloading new and delete operators
+        void* operator new (size_t size);
+        void operator delete (void *p);
+        
         ~String();
         
     protected:

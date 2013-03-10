@@ -48,6 +48,10 @@ namespace xml{
         //base destructor is virtual
         //popping all elements off element deque
         virtual ~Element();
+        
+        //overloading new and delete operators
+        void* operator new (size_t size);
+        void operator delete (void *p);
                
     private:
         // Private things for your implementation.
