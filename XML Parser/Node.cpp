@@ -9,6 +9,6 @@
 #include "Node.hpp"
 
 namespace xml {
-    //Ask Prof. Chiu about this
+    
     Node::~Node() {}
 }
