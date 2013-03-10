@@ -215,7 +215,7 @@ namespace xml {
             
             std::stack<String, std::vector<String>> &r_s = (*NSTable)[e->nsi];
             if (r_s.empty()) {
-                std::cerr << "ERROR: Invalid input while processing start tag 8"<<std::endl;
+                std::cerr << "ERROR: Invalid input while processing start tag 9"<<std::endl;
                 delete e;
                 return nullptr;
             }

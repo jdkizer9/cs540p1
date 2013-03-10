@@ -14,6 +14,7 @@
 namespace xml {
     
     class Visitor;
+    
     class Text : public Node {
     public:
         // Returns the text content as a string.

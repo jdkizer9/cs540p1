@@ -20,7 +20,8 @@ namespace xml {
         while (head != nullptr) {
             void *p = head;
             head = head->next;
-            free(p);
+            //free(p);
+            ::operator delete(p);
             //count--;
         }
         //assert(count == 0);
@@ -32,7 +33,8 @@ namespace xml {
         if (head == nullptr)
         {
             //assert (count == 0);
-            return malloc(typeSize);
+            //return malloc(typeSize);
+            return ::operator new(typeSize);
         } else {
             //assert (count > 0);
             void *p = head;

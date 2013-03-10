@@ -116,9 +116,9 @@ bool operator==(const String &, const char *);
 bool operator!=(const char *, const String &);
 bool operator!=(const String &, const char *);
     
+// Comparison with String.
 bool operator==(const String &, const String &);
 bool operator!=(const String &, const String &);
-    
 bool operator<(const String &, const String &);
     
 // Output operator
