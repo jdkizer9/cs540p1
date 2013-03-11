@@ -47,7 +47,7 @@ namespace xml {
         delete[] children;
         
         //delete definedNSIs
-        //assert(definedNSIs == nullptr);
+        assert(definedNSIs == nullptr);
 //        if (definedNSIs != nullptr)
 //            delete definedNSIs;        
         
@@ -68,7 +68,7 @@ namespace xml {
                 newChildren[i] = children[i];
             }
             //delete old array
-            delete children;
+            delete[] children;
             //reassign children
             children = newChildren;
         }

@@ -229,17 +229,17 @@ namespace xml {
         //If we have not found the root element, we must have just processed it
         if (!foundRoot) {
             //do some assertions
-            //assert(root == nullptr);
-            //assert(elementStack != nullptr);
-            //assert(elementStack->empty() == true);
+            assert(root == nullptr);
+            assert(elementStack != nullptr);
+            assert(elementStack->empty() == true);
             foundRoot = true;
             root = e;
         } else {
             //Not the root element, the element at the top of the
             //element stack is the parent, add there
             //do some assertions
-            //assert(root != nullptr);
-            //assert(elementStack->empty() != true);
+            assert(root != nullptr);
+            assert(elementStack->empty() != true);
             Element *parent = elementStack->top();
             parent->addChild(e);
         }
@@ -258,7 +258,7 @@ namespace xml {
         //elem name / NSI
         in+=1;
         
-        //assert(!elementStack->empty());
+        assert(!elementStack->empty());
         if(elementStack->empty()) {
             std::cerr << "ERROR: The root end tag has already been processed"<<std::endl;
             return -1;
@@ -338,7 +338,7 @@ namespace xml {
             {
                 //guarantee that this exists
                 std::stack<String, std::vector<String>> &r_s = (*NSTable)[*it];
-                //assert(!(r_s.empty()));
+                assert(!(r_s.empty()));
                 r_s.pop();
             }
         
@@ -347,7 +347,7 @@ namespace xml {
         e->definedNSIs = nullptr;
         
         }
-        //assert( (elementStack->size()==1)?(elementStack->top() == root):(elementStack->size()>1));
+        assert( (elementStack->size()==1)?(elementStack->top() == root):(elementStack->size()>1));
         
         //std::cout<<"Removing Element "<< elementStack->top()->nmspace() << ":" << elementStack->top()->name() << std::endl;
         
