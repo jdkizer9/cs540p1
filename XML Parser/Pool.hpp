@@ -17,19 +17,27 @@ namespace xml {
         Object *next;
     };
     
+    struct Block {
+        Block *next;
+        Object first;
+    };
+    
     class Pool {
     public:
-        Pool(size_t);
+        //if initObjects is nonzero, rounded up to the nearest block
+        Pool(size_t s, size_t initObjects=0);
         ~Pool();
         void *allocate();
         void deallocate(void *);
         inline bool checkSize(size_t s) const {return (s == typeSize);};
         
     private:
-        Object *head;
+        void allocateBlocks(size_t);
+        Object *headObject;
+        Block *headBlock;
         size_t count;
         size_t typeSize;
-        
+        size_t objectsPerBlock;
     };
 }
 

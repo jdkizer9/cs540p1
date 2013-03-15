@@ -12,7 +12,7 @@
 
 namespace xml {
     
-    static Pool stringPool(sizeof(String));
+    static Pool stringPool(sizeof(String), 1000000);
 
     // Copy constructor.
     String::String(const String &s) : ptr(s.ptr), len(s.len) {

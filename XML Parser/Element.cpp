@@ -17,7 +17,7 @@
 
 namespace xml {
     
-    static Pool elementPool(sizeof(Element));
+    static Pool elementPool(sizeof(Element), 600000);
     
     Element::Element() : definedNSIs(nullptr), cSize(0), cMaxSize(4) {
         children = new const Node *[cMaxSize];
@@ -47,7 +47,7 @@ namespace xml {
         delete[] children;
         
         //delete definedNSIs
-        assert(definedNSIs == nullptr);
+        //assert(definedNSIs == nullptr);
 //        if (definedNSIs != nullptr)
 //            delete definedNSIs;        
         
