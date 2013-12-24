@@ -1,0 +1,25 @@
+XML Performance Test Document Generator
+----------------------------------------
+
+Used to generate large files.  Arguments are:
+
+    output file, level, the number of namespace in each level, iteration N
+
+Example:
+
+    ./gen testdoc.xml 4 6 0.25 30000
+
+Correctness Test Files
+----------------------
+
+In subdirectory good_xml.
+
+Bad Input Test File
+-------------------
+
+In subdirectory bad_xml.  Don't crash on any of errors.
+
+Sample Solution
+---------------
+
+sample_solution.64 is compiled for 64-bit x86.

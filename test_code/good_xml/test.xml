@@ -1,0 +1,14 @@
+<r>
+<e   >Tabs are white space</e  >
+<e
+>New line is okay as white space</e>
+<e>The chars :>"= are okay as content.</e> 
+<ns1:e1 xmlns:ns1="URI1">
+  Namespace can be rebound
+  <ns1:e2 xmlns:ns1="URI2">ns1 rebound here.</ns1:e2>
+  <ns1:e2>ns1 should be original URI here.</ns1:e2>
+</ns1:e1>
+<e_1>Underscore in name okay.</e_1>
+<xmlns>Element can be named xmlns.</xmlns>
+<xmlns:xmlns xmlns:xmlns="xmlns">xmlns can appear in different places.</xmlns:xmlns>
+</r>

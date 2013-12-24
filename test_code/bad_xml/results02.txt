@@ -1,0 +1,428 @@
+
+********************************************************************************
+Performing Bad XML Test 01
+
+________________________________________________________________________________
+ERROR: Invalid input while processing open angle bracket
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 02
+
+________________________________________________________________________________
+ERROR: Invalid input while processing open angle bracket
+Start: :elem
+  Text: "Space not allowed before slash in end-tag."
+End: :elem
+Starting visit of element :elem...
+  Visiting text content "Space not allowed before slash in end-tag.".
+Ending visit of element :elem.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 03
+
+________________________________________________________________________________
+ERROR: End Tag Name does not match the current element's Name
+Start: :elem
+  Text: "Space not allowed after slash in end-tag."
+End: :elem
+Starting visit of element :elem...
+  Visiting text content "Space not allowed after slash in end-tag.".
+Ending visit of element :elem.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 04
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 3
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 05
+
+________________________________________________________________________________
+Start: :elem
+  Text: "Empty URI not allowed"
+End: :elem
+Starting visit of element :elem...
+  Visiting text content "Empty URI not allowed".
+Ending visit of element :elem.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 06
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 8
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 07
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 3
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 08
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 3
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 09
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 4
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 10
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 4
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 11
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 4
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 12
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 5
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 13
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 3
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 14
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 7
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 15
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 7
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 16
+
+________________________________________________________________________________
+Start: http://www.foo.org:elem
+  Text: "Missing prefix in close tag."
+End: http://www.foo.org:elem
+Starting visit of element http://www.foo.org:elem...
+  Visiting text content "Missing prefix in close tag.".
+Ending visit of element http://www.foo.org:elem.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 17
+
+________________________________________________________________________________
+ERROR: End Tag NSI does not match the current element's NSI
+Start: http://www.foo.org:elem
+  Text: "Wrong prefix in close tag, different URI."
+End: http://www.foo.org:elem
+Starting visit of element http://www.foo.org:elem...
+  Visiting text content "Wrong prefix in close tag, different URI.".
+Ending visit of element http://www.foo.org:elem.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 18
+
+________________________________________________________________________________
+ERROR: End Tag NSI does not match the current element's NSI
+Start: foo:elem
+  Text: "Wrong prefix in close tag, same URI."
+End: foo:elem
+Starting visit of element foo:elem...
+  Visiting text content "Wrong prefix in close tag, same URI.".
+Ending visit of element foo:elem.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 19
+
+________________________________________________________________________________
+ERROR: End Tag Name does not match the current element's Name
+Start: :e1
+  Start: :e2
+    Text: "Mismatched end-tags."
+  End: :e2
+End: :e1
+Starting visit of element :e1...
+  Starting visit of element :e2...
+    Visiting text content "Mismatched end-tags.".
+  Ending visit of element :e2.
+Ending visit of element :e1.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 20
+
+________________________________________________________________________________
+ERROR: Invalid input while text
+Start: :no_end_tag
+End: :no_end_tag
+Starting visit of element :no_end_tag...
+Ending visit of element :no_end_tag.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 21
+
+________________________________________________________________________________
+Invalid input at end of stream
+Start: :e
+  Text: "Non whitespace after root is not allowed."
+End: :e
+Starting visit of element :e...
+  Visiting text content "Non whitespace after root is not allowed.".
+Ending visit of element :e.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 22
+
+________________________________________________________________________________
+Invalid input while looking for root element
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 23
+
+________________________________________________________________________________
+Assertion failed: (elementStack->empty() != true), function processStartTag, file /Users/jk/Documents/CS540/Programming Assignments/XML Parser/XML Parser/Parser.cpp, line 198.
+./bad_test.sh: line 187:  5368 Abort trap: 6           ./XML\ Parser -m -f bad23.xml -c
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 24
+
+________________________________________________________________________________
+ERROR: The root end tag has already been processed
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+./bad_test.sh: line 197: echoecho: command not found
+Performing Bad XML Test 25
+
+________________________________________________________________________________
+ERROR: End Tag Name does not match the current element's Name
+Start: :r
+  Text: "\n"
+End: :r
+Starting visit of element :r...
+  Visiting text content "\n".
+Ending visit of element :r.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 26
+
+________________________________________________________________________________
+Invalid input at end of stream
+Start: :r
+  Text: "\n"
+End: :r
+Starting visit of element :r...
+  Visiting text content "\n".
+Ending visit of element :r.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 27
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 2
+Start: :root
+  Text: "\n"
+End: :root
+Starting visit of element :root...
+  Visiting text content "\n".
+Ending visit of element :root.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 28
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 2
+Start: :root
+  Text: "\n"
+End: :root
+Starting visit of element :root...
+  Visiting text content "\n".
+Ending visit of element :root.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 29
+
+________________________________________________________________________________
+ERROR: Invalid input while processing end tag 2
+Start: :root
+  Text: "\n"
+  Start: uri:e
+  End: uri:e
+End: :root
+Starting visit of element :root...
+  Visiting text content "\n".
+  Starting visit of element uri:e...
+  Ending visit of element uri:e.
+Ending visit of element :root.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 30
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 2
+Start: :root
+  Text: "\n"
+End: :root
+Starting visit of element :root...
+  Visiting text content "\n".
+Ending visit of element :root.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 31
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 4
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 32
+
+________________________________________________________________________________
+Start: :r
+  Text: "Missing prefix"
+End: :r
+Starting visit of element :r...
+  Visiting text content "Missing prefix".
+Ending visit of element :r.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 33
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 5
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 34
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 3
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 35
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 3
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+
+********************************************************************************
+Performing Bad XML Test 36
+
+________________________________________________________________________________
+ERROR: Invalid input while processing start tag 4
+Start: :
+End: :
+Starting visit of element :...
+Ending visit of element :.
+________________________________________________________________________________
+

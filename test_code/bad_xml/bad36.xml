@@ -1,0 +1,3 @@
+<element xmlns:bad<xml="http://google.com">
+Can't have a left angle bracket in the wrong place.
+</element>

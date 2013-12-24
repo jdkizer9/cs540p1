@@ -1,0 +1,1 @@
+<ns:elem xmlns:ns="http://www.foo.org" xmlns:ns2="foo">Wrong prefix in close tag, different URI.</ns2:elem>
